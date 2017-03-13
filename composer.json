@@ -1,0 +1,13 @@
+{
+    "name": "NewsHunterFB",
+    "description": "getting news from universities news channels",
+    "authors": [
+        {
+            "name": "Rhuan Victor",
+            "email": "rhuanvcsantiago@gmail.com"
+        }
+    ],
+    "require": {
+        "j7mbo/twitter-api-php": "dev-master"
+    }
+}
