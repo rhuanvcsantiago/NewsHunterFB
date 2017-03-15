@@ -1,0 +1,46 @@
+# DATABASE
+    - Informações necessárias para envio de Emails.
+        - Quando o admin categorizou uma noticia?
+        - Quando foi executado o ultimo envio de emails?
+
+    - Informações para Buscar de notícias:
+        - Quais institutos e os broadcasters que irá se pegar as notícias?
+        - Qual foi a ultima notícia salva?
+            - DATA
+            - Chave da notícia 
+        - Quando foi executado a última busca de notícias?
+        - Quantas notícias foram buscadas e salvas?
+
+
+# SERVER (NEWSFETCHER)
+    - acessa banco de dados para pegar as confirações para funcionar:
+        - configurações:
+            - institutos e broadcasters que ele precisa buscar.
+            - informações das ultimas notícias que estão cadastradas
+                - ultimas chaves e datas de cada instituto e broadcasters já cadastradas.
+                
+    - executar busca de notícias nas configurações acima:
+        - procura ultimas notícias de cada instituto e broadcasters que não esteja cadastrado.
+            - as noticias de redes sociais sao usadas APIs específicas de cada uma.
+            - as noticias de site precisaão ser acessadas ataves de web scrapping, ou seja, cada site é algo único.
+
+    - salvar no banco de dados as noticias coletadas.
+
+    - salvar dados da própria execução para controle futuro.
+        - Qual instituto e broadcaster ele conseguir pegar.
+        - Quantas noticias conseguiu pegar.
+        - Data que foi executado.
+
+
+# ADMIN PAINEL
+    - Executa NEWSFETCHER
+    - Envia emails
+        - pega emails cadastrados
+        - envia noticias categorizadas do dia
+        - salva informação de quando o admin categorizou aquela noticia. - ADICAO DATABASE
+        - salvar informacao de quando foi executado o ultimo envio de emails. - ADICAO DATABASE
+        - envia emails de noticias desde a data do ultimo email enviado.
+    - Carrega todas as notícias do banco de dados que ainda não foram classificadas.
+    - Mostra as noticias para o admin.
+    - Permite interação do admin com as noticias mostradas: 
+    as noticias não classificadas.

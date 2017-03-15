@@ -1,5 +1,6 @@
 <?php
 
+/*
 $institutes = [
     "ITA" => [
         "SITE" => "TESTE",
@@ -22,6 +23,7 @@ $institutes = [
         "FACEBOOK" => ""
     ]
 ];
+*/
 
 $twitterSettings = array(
     'oauth_access_token' => "710259368063803392-J3iAEJvvYjphXLKgUUslhGczx7zUXhf",
@@ -38,5 +40,7 @@ client token:  e55154de3d18e80e63b1206135f52acb
 app acess token: 1762035860779758|suyedAZYN2rE9eEaKXs1yejme3I
 
 https://graph.facebook.com/129824040421668/feed?access_token=1762035860779758|suyedAZYN2rE9eEaKXs1yejme3I
+ver codificacao utf8_decode
 
+*/
 
