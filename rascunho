@@ -19,7 +19,7 @@
             - informações das ultimas notícias que estão cadastradas
                 - ultimas chaves e datas de cada instituto e broadcasters já cadastradas.
                 
-    - executar busca de notícias nas configurações acima:
+    - executar busca de notícias com configurações acima:
         - procura ultimas notícias de cada instituto e broadcasters que não esteja cadastrado.
             - as noticias de redes sociais sao usadas APIs específicas de cada uma.
             - as noticias de site precisaão ser acessadas ataves de web scrapping, ou seja, cada site é algo único.
@@ -33,6 +33,13 @@
 
 
 # ADMIN PAINEL
+    - Conectar com banco
+        - Tentar se conectar com o banco.
+            - Dar erro se não conseguir.
+        - Tentar pegar configurações do banco.
+            - Se não conseguir.
+                - Apresentar warning.
+                - Criar script básico.     
     - Executa NEWSFETCHER
     - Envia emails
         - pega emails cadastrados
@@ -44,3 +51,70 @@
     - Mostra as noticias para o admin.
     - Permite interação do admin com as noticias mostradas: 
     as noticias não classificadas.
+
+
+================================  FACEBOOK POST ================================   
+        CAMPO       |           SIGNIFICADO         |           EXEMPLO     
+================================================================================            
+                    |                               |
+  id                |     chave de acesso           |     129824040421668_1434009690003090  
+  created_time      |     data criação              |     2017-03-14T12:24:44+0000           
+  type              |     tipo de postagem          |     link                
+  name              |     titulo da noticia         |     Evento Mulheres em STEM²D é sucesso | ITA
+  message           |     mensagem do post          |     ITA e Johnson&Johnson dão continuidade ao projeto de incentivo à participação feminina das áreas de exatas.   
+  description       |     conteudo do shared link   |     Dando sequência ao projeto STEM²D, que tem como objetivo principal incentivar o ingresso de mulheres em cursos nas áreas de ciências, tecnologia, engenharia, matemática, manufatura e design, o ITA e a Johnson&Johnson realizaram, neste último sábado (11), o evento Mulheres em STEM²D 2017.       
+  link              |     link compartilhado        |     http://www.ita.br/noticias/eventomulheresemstemdsucesso
+  full_picture      |     imagem compartilhada      |     https://external.xx.fbcdn.net/safe_image.php?d=AQBP1reWZhDg4GPe&w=130&h=130&url=http%3A%2F%2Fwww.ita.br%2Fsites%2Fdefault%2Ffiles%2Fstyles%2Fnoticia_interno%2Fpublic%2Fpictures%2Fnoticias%2F04%2520MULHERES%2520EM%2520STEMD.jpg%3Fitok%3DrsyWzTno&cfs=1&_nc_hash=AQC-hFUShk2_lvBn
+                    |                               |
+================================================================================  
+
+================================  TWIITER POST =================================   
+        CAMPO       |           SIGNIFICADO         |           EXEMPLO     
+================================================================================  
+                    |                               |
+  id                |     chave de acesso           |     839547775809433601  
+  created_at        |     data criação              |     Wed Mar 08 18:46:02 +0000 2017           
+  text              |     corpo da mensagem         |     Despedida de Oficial - Em cerimônia realizada no auditório, o Subcomandante do IME apresentou os cumprimentos ao... https://t.co/GgmWBzPFrs                
+                    |                               |
+  entities->        |                               |
+   urls->           |     link compartilhado        |     https://t.co/TLt0cQ6HKt
+    expanded_url    |                               |
+                    |                               |
+  entities->        |                               |
+   media->          |     imgm compartilhada        |     http://pbs.twimg.com/media/C7D4I6iWwAIG-8J.jpg
+    media_url       |                               |                                               
+                    |                               | 
+================================================================================                           
+
+=========================================  NEWSHUNTER NEWS ===================================================
+        CAMPO       | SIT | FAC | TWI |          SIGNIFICADO           |           EXEMPLO     
+==============================================================================================================  
+                    |     |     |     |                                |
+  id                |  x  |  x  |  x  |    identificador da tabela     |   0,1,2,3,4...
+  acess_key         |     |  x  |  x  |    social network key          |   839547775809433601
+  created_time      |  x  |  x  |  x  |    data de criacao da new      |   2017-03-14T12:24:44+0000
+  type              |     |  x  |     |    tipo de post                |   link, photo  
+  title             |  x  |  x  |     |    titulo da noticia           |   text
+  content           |  x  |  x  |  x  |    conteudo do post            |   text
+  expanded_content  |  x  |  x  |     |    mais conteúdo               |   text  
+  shared_link       |  x  |  x  |  x  |    link compartilhado          |   http://test.com 
+  full_picture_link |  x  |  x  |  x  |    mais conteúdo               |   http://test.com/image.png   
+
+================================================================================+==============================   
+
+
+================= RELACAO ENTRE CAMPOS ==================
+        CAMPO       |       FAC       |        TWI               
+=========================================================  
+                    |                 |                      
+  id                |  -              |   -              
+  acess_key         |  id             |   id           
+  created_time      |  created_time   |   created_at            
+  type              |  type           |   -                
+  title             |  name           |   -              
+  content           |  message        |   text             
+  expanded_content  |  description    |   -              
+  shared_link       |  link           |   entities->urls->expanded_url                 
+  full_picture_link |  full_picture   |   entities->media->media_url             
+                    |                 |                 
+=========================================================

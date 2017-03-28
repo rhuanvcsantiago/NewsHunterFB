@@ -42,5 +42,10 @@ app acess token: 1762035860779758|suyedAZYN2rE9eEaKXs1yejme3I
 https://graph.facebook.com/129824040421668/feed?access_token=1762035860779758|suyedAZYN2rE9eEaKXs1yejme3I
 ver codificacao utf8_decode
 
+$data  = file_get_contents("https://graph.facebook.com/PAGE_ID/posts?access_token=YOUR_ACCESS_TOKEN");
+                            https://graph.facebook.com/v2.8/{PAGE-ID}}/posts?{FIELDS}}&access_token={ACESS_TOKEN}}
+
+$data = json_decode($data, true);
+
 */
 
