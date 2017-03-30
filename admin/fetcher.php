@@ -2,8 +2,10 @@
 <?php
 //error_reporting(E_ALL ^ E_WARNING);
 
-include 'config.php';
-require 'vendor/autoload.php';
+//include 'config.php';
+require '../vendor/autoload.php';
+
+
 
 function debug() {
     $trace = debug_backtrace();
@@ -27,8 +29,6 @@ function mysql_escape_mimic($inp) {
     return $inp; 
 } 
 
-
-
 function saveTwitterNews($broadcaster_properties){
 
    
@@ -44,7 +44,7 @@ function saveTwitterNews($broadcaster_properties){
                                                                         //DATA BASE FIELDS
         $id             = $post["id"];           //acess_key
         $created_at     = $post["created_at"];    //created_time
-        $text           = utf8_encode( $post["text"] );          //content
+        $text           = mysql_escape_mimic( utf8_encode( $post["text"] ) );          //content
         $expanded_url   = $post["link"];          //shared_link
         $media_url      = $post["image"];         //full_picture_link
 
@@ -100,9 +100,9 @@ function saveFacebookNews($broadcaster_properties){
         $access_key     = $post["id"];                                       // access_key
         $created_time   = $post["created_time"];                             // created_time
         $type           = $post["type"];                                         // type
-        $name           = utf8_encode( $post["name"] );            // title
-        $message        = utf8_encode( $post["message"] );         // content
-        $description    = utf8_encode( $post["description"] );     // expanded_content
+        $name           = mysql_escape_mimic( utf8_encode( $post["name"] ));            // title
+        $message        = mysql_escape_mimic( utf8_encode( $post["message"] ) );         // content
+        $description    = mysql_escape_mimic( utf8_encode( $post["description"] ) );     // expanded_content
         $link           = $post["lnk"];                                         // shared_link
         $full_picture   = $post["full_picture"];                                 // full_picture_link      
 
@@ -168,9 +168,6 @@ function saveNews($institutes_and_broadcasters){
 
 function fechNews($institutes_and_broadcasters){
 
-    //echo "dentro do fetchFacebookNews <br/>";
-    //debug($institutes_and_broadcasters);
-    //exit;
 
     foreach ($institutes_and_broadcasters as $institute_name => $broadcaster_array) {
         foreach ($broadcaster_array as $broadcaster_name => $broadcaster_properties) {
@@ -447,7 +444,7 @@ function getInstitutesAndBroadcasters(){
 
         echo "CONFIGURAÇAO CARREGADA COM SUCESSO.<br/>";
         echo "<br/>";
-        debug($institutes_and_broadcasters);    
+        //debug($institutes_and_broadcasters);    
     } else {
         echo "FALHA CRITICA -> NO CARREGAMENTO DAS CONFIGURACOES.<BR/>";
         echo "SCRIPT ENCERRADO";
