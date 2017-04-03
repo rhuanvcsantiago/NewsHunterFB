@@ -1,11 +1,82 @@
 <div class="row">
     <button  id="botaoConcluir" type="button" class="btn btn-primary btn-lg">CONCLUIR ALTERACOES</button>
+    <div id="salvarResult"></id>
+    <script>
+         $("#botaoConcluir").on("click", function(){
+           
+            var jqxhr = $.post( "admin/manageNews.php", { update: { ignore: NEWS_LIST_TO_IGNORE , approve: NEWS_LIST_TO_APPROVE } } )
+            .done(function() {
+                $("#content").html( jqxhr.responseText );
+            })
+            .fail(function() {
+                $("#content").append( "<h2> deu pau ! EITA! </h2>" );
+            })
+            .always(function() {
+                // apaga o gif de load
+                // $("#content").append( "funcao alway" );
+            }); 
+        });
+
+    </script>
 </div>
 
 <div class="row">
+<div class="container">
+
 
 
 <?php
+
+
+function debug() {
+    $trace = debug_backtrace();
+    $rootPath = dirname(dirname(__FILE__));
+    $file = str_replace($rootPath, '', $trace[0]['file']);
+    $line = $trace[0]['line'];
+    $var = $trace[0]['args'][0];
+    $lineInfo = sprintf('<div><strong>%s</strong> (line <strong>%s</strong>)</div>', $file, $line);
+    $debugInfo = sprintf('<pre>%s</pre>', print_r($var, true));
+    print_r($lineInfo.$debugInfo);
+}
+
+    
+
+    // UPLOAD DATABASE WITH IGNORED OR APROVED NEWS
+    if( isset( $_POST["update"] ) ){
+        //debug( $_POST["update"] );
+        $con = new mysqli("localhost", "root", "105734", "newshunterffb");
+
+        if ($con->connect_errno) {
+            echo "Failed to connect to MySQL: (" . $con->connect_errno . ") " . $con->connect_error;
+        }
+        $query = "START TRANSACTION;\nUSE NewsHunterFFB;\n";
+
+        if( isset( $_POST["update"]["ignore"] ) ){
+            foreach ($_POST["update"]["ignore"] as $index => $news_id) {
+                $query .= "UPDATE Institute_has_Broadcaster_has_News SET is_relevant = FALSE WHERE news_id=". $news_id . ";\n";
+            }
+        }
+
+        if( isset( $_POST["update"]["approve"] ) ){
+            foreach ($_POST["update"]["approve"] as $index => $news_id) {     
+                $query .= "UPDATE Institute_has_Broadcaster_has_News SET is_relevant = TRUE WHERE news_id=". $news_id . ";\n";
+            }
+        }
+
+        $query .= "COMMIT;";
+
+        if ($con->multi_query($query) === TRUE) { 
+            echo "mudanças salvas, pagina atualizada;";
+            echo "<br/>";
+        } else {
+            echo "Error: " . $query . "<br>" . $con->error;
+        }  
+
+        //debug($query);
+        sleep(1);
+        //echo "data para update: " . $_POST["update"];
+    }
+
     $mysqli = new mysqli("localhost", "root", "105734", "newshunterffb");
 
     if ($mysqli->connect_errno) {
@@ -21,13 +92,14 @@
     if ($result->num_rows > 0) {
         
         $row = $result->fetch_assoc();
+        $count = 0;
 
         while( $row ) { 
 
             if( $institute != $row["institute_name"] ) {
                 // ABRE E FECHA LINHA INSTITUTO
                 $institute = $row["institute_name"];
-                echo '<div class="row" style="background-color:GRAY; color:white; text-align:center; padding:10px;">' . $institute . '</div>';
+                echo '<div class="row " data-toggle="collapse" data-target="#'.$institute.'" style="background-color:GRAY; color:white; text-align:center; padding:10px;">' . $institute . '<span class="badge">qtd_noticias</span></div>';
                 $instituteChanged = true;
 
             }
@@ -39,7 +111,7 @@
                 
                 // NOVA LINHA BROADCASTER
                 if( $instituteChanged ){
-                    echo '<div class="row">';
+                    echo '<div class="row collapse" id="'.$institute.'">';
                     $instituteChanged = false;
                 }
                 
@@ -107,17 +179,15 @@
 
         } 
     } else {
-        echo "FALHA CRITICA<BR/>";
-        echo "SCRIPT ENCERRADO";
+        echo "Nenhum resultado encontrado ou falha ao buscar.<BR/>";
+        echo "SCRIPT ENCERRADO.";
         exit;
     }
 
 ?>
-
-
-
+</div>
 <script>
-    var NEWS_LIST_TO_APROVE = [];
+    var NEWS_LIST_TO_APPROVE = [];
     var NEWS_LIST_TO_IGNORE = [];
 
     $(".botaoAprovar").on("click", function(){
@@ -130,7 +200,7 @@
             NEWS_LIST_TO_IGNORE.splice(index, 1);
         }
 
-        NEWS_LIST_TO_APROVE.push( newsId ); 
+        NEWS_LIST_TO_APPROVE.push( newsId ); 
 
         $(this).parent().css("background-color", "#90EE90");
     })
@@ -138,10 +208,10 @@
     $(".botaoNegar").on("click", function(){
         var newsId = $(this).children().text(); 
 
-        var index = NEWS_LIST_TO_APROVE.indexOf(newsId);
+        var index = NEWS_LIST_TO_APPROVE.indexOf(newsId);
         
         if (index > -1) {
-            NEWS_LIST_TO_APROVE.splice(index, 1);
+            NEWS_LIST_TO_APPROVE.splice(index, 1);
         }
 
         NEWS_LIST_TO_IGNORE.push( newsId ); 
@@ -153,10 +223,10 @@
     $(".botaoDepois").on("click", function(){
         var newsId = $(this).children().text(); 
 
-        var index = NEWS_LIST_TO_APROVE.indexOf(newsId);
+        var index = NEWS_LIST_TO_APPROVE.indexOf(newsId);
         
         if (index > -1) {
-            NEWS_LIST_TO_APROVE.splice(index, 1);
+            NEWS_LIST_TO_APPROVE.splice(index, 1);
         }
 
         index = NEWS_LIST_TO_IGNORE.indexOf(newsId);
@@ -170,10 +240,8 @@
     })
 
     $("#botaoConcluir").on("click", function(){
-        console.log( "NEWS_LIST_TO_APROVE" );
-        console.log( NEWS_LIST_TO_APROVE );
-        console.log( "NEWS_LIST_TO_IGNORE" );        
-        console.log( NEWS_LIST_TO_IGNORE );
+        console.log( JSON.stringify({aprove: NEWS_LIST_TO_APPROVE, ignore: NEWS_LIST_TO_IGNORE  }) );
+        
     })
 </script>
 

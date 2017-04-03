@@ -58,8 +58,7 @@ function saveTwitterNews($broadcaster_properties){
                 .$expanded_url."', '"
                 .$media_url."');\n\n";
         
-       echo "salvando chave " . $id;
-       echo "<br/>"; 
+       echo "- salvando news de chave: " . $id. ".  ";
          
        if ($mysqli->query($sql) === TRUE) {
 
@@ -68,7 +67,7 @@ function saveTwitterNews($broadcaster_properties){
                    .$mysqli->insert_id."');\n\n";
             
             if ($mysqli->query($sql) === TRUE) { 
-                echo "saved new;";
+                echo "<strong>news salva.</strong>";
                 echo "<br/>";
             } else {
                 echo "Error: " . $sql . "<br>" . $mysqli->error;
@@ -119,8 +118,7 @@ function saveFacebookNews($broadcaster_properties){
                 .$link."', '"
                 .$full_picture."');\n\n";         
 
-        echo "salvando chave " . $access_key; 
-        echo "<br/>";
+        echo "- salvando news de chave: " . $access_key. ".  "; 
 
        if ($mysqli->query($sql) === TRUE) {
 
@@ -129,7 +127,7 @@ function saveFacebookNews($broadcaster_properties){
                    .$mysqli->insert_id."');\n\n";
             
             if ($mysqli->query($sql) === TRUE) { 
-                echo "saved new;";
+                echo "<strong>news salva.</strong>";
                 echo "<br/>";
             } else {
                 echo "Error: " . $sql . "<br>" . $mysqli->error;
@@ -147,6 +145,7 @@ function saveNews($institutes_and_broadcasters){
     foreach ($institutes_and_broadcasters as $institute_name => $broadcaster_array) {
         foreach ($broadcaster_array as $broadcaster_name => $broadcaster_properties) { 
             if( count($institutes_and_broadcasters[$institute_name][$broadcaster_name]["NEWS"] ) > 0 ) {
+                echo "<br/>";
                 echo "Salvando news de " . $institute_name . "-" . $broadcaster_name;
                 echo "<br/>";
                 switch ($broadcaster_name) {
@@ -284,6 +283,7 @@ function fetchFacebookNews($facebook_page_id, $last_fetched_key){
 
     $arrayPosts = [];
     
+    // PEGA A PRIMEIRA PAGINA DE POSTS
     foreach ($data as $type => $content) {
         if($type == "data"){
             foreach ($content as $pos => $post) {
@@ -338,7 +338,22 @@ function fetchFacebookNews($facebook_page_id, $last_fetched_key){
         }  
     } 
     
-    while( $page_last_post_key > $last_fetched_key ){
+    while( ($last_fetched_key =! "") && ($page_last_post_key > $last_fetched_key) ){
+
+        /*
+            $i=0;
+
+            if( $i == 20){
+                debug($page_last_post_key);
+                debug($last_fetched_key);
+                exit;
+            }
+
+            $i++;
+            debug($i);
+            error_log(print_r($i, TRUE));
+        */
+
         $request_link = $data["paging"]["next"];
         $data  = file_get_contents($request_link);            
         $data = json_decode($data, true);

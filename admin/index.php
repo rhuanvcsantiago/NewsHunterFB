@@ -17,8 +17,8 @@
     </div>
     <div class="row">
         <div class="container-fluid" >
-            <div class="row">
-                <div id="menu" class="col-xs-2" style="padding-top:10px; min-height:400px"> 
+            <div class="row" style="padding-left:15px;">
+                <div id="menu" class="col-xs-2" style="padding-top:10px; padding-left:10px; min-height:400px"> 
                     <div class="list-group">
                         <a id="cadastros" href="#" class="list-group-item"> CADASTROS      </a>
                         <a id="runFetcher" href="#" class="list-group-item"> RUN FETCHER    </a>
@@ -83,6 +83,23 @@
             $("#content").html("<h4>pegando cadastros... </h4>");
 
             var jqxhr = $.ajax( "admin/manageNews.php" )
+            .done(function() {
+                $("#content").html( jqxhr.responseText );
+            })
+            .fail(function() {
+                $("#content").append( "<h2> deu pau ! EITA! </h2>" );
+            })
+            .always(function() {
+                // apaga o gif de load
+                // $("#content").append( "funcao alway" );
+            }); 
+        });
+
+        $("#sendMails").on("click", function(){
+           
+            $("#content").html("<h4>pegando cadastros... </h4>");
+
+            var jqxhr = $.ajax( "admin/sendMails.php" )
             .done(function() {
                 $("#content").html( jqxhr.responseText );
             })
