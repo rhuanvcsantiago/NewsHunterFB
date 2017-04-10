@@ -4,7 +4,7 @@
     <script>
          $("#botaoConcluir").on("click", function(){
            
-            var jqxhr = $.post( "admin/manageNews.php", { update: { ignore: NEWS_LIST_TO_IGNORE , approve: NEWS_LIST_TO_APPROVE } } )
+            var jqxhr = $.post( "manageNews.php", { update: { ignore: NEWS_LIST_TO_IGNORE , approve: NEWS_LIST_TO_APPROVE } } )
             .done(function() {
                 $("#content").html( jqxhr.responseText );
             })

@@ -3,7 +3,7 @@
 //error_reporting(E_ALL ^ E_WARNING);
 
 //include 'config.php';
-require '../vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 
 

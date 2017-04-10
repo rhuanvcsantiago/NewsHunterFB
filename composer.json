@@ -8,6 +8,7 @@
         }
     ],
     "require": {
-        "j7mbo/twitter-api-php": "dev-master"
+        "j7mbo/twitter-api-php": "dev-master",
+        "cboden/ratchet": "^0.3.6"
     }
 }

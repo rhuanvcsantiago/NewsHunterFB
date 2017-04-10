@@ -2,18 +2,19 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="ISO-8859-1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>NewsHunter admin painel </title>
+    <title>NewsHunter mvp painel </title>
     <!-- Bootstrap -->
     <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="row" style="text-align:center; padding: 20px; color:#9d9d9d; background-color:#101010;">
-         HEADER - NewsHunter - HEADER
+         NewsHunter Admin Painel
     </div>
     <div class="row">
         <div class="container-fluid" >
@@ -27,14 +28,13 @@
                     </div>               
                 </div>
                 <div id="content" class="col-xs-10" style="padding:10px; min-height:400px">                
-                    PAGINA INICIAL
-                    SERA CARREGADO CONTEUDO DAS OUTRAS PAGINAS VIA AJAX             
+                    <img src="../logo2.png"></imap_gc>            
                 </div>
             </div>       
         </div>
     </div>
     <div class="row" style="text-align:center; padding: 20px; color:#9d9d9d; background-color:#101010;">
-                FOOTER - NewsHunter - FOOTER        
+                NewsHunter       
             </div>     
     <!--jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -47,7 +47,7 @@
            
             $("#content").html("<h4> executando fetcher... </h4>");
 
-            var jqxhr = $.ajax( "admin/fetcher.php" )
+            var jqxhr = $.ajax( "fetcher.php" )
             .done(function() {
                 $("#content").append( "<h4> busca de notícias concluida! Resultados: </h4>" );
                 $("#content").append( jqxhr.responseText );
@@ -65,7 +65,7 @@
            
             $("#content").html("<h4>pegando cadastros... </h4>");
 
-            var jqxhr = $.ajax( "admin/cadastros.php" )
+            var jqxhr = $.ajax( "cadastros.php" )
             .done(function() {
                 $("#content").html( jqxhr.responseText );
             })
@@ -82,7 +82,7 @@
            
             $("#content").html("<h4>pegando cadastros... </h4>");
 
-            var jqxhr = $.ajax( "admin/manageNews.php" )
+            var jqxhr = $.ajax( "manageNews.php" )
             .done(function() {
                 $("#content").html( jqxhr.responseText );
             })
@@ -99,7 +99,7 @@
            
             $("#content").html("<h4>pegando cadastros... </h4>");
 
-            var jqxhr = $.ajax( "admin/sendMails.php" )
+            var jqxhr = $.ajax( "sendMails.php" )
             .done(function() {
                 $("#content").html( jqxhr.responseText );
             })
