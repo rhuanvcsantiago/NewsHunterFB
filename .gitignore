@@ -2,3 +2,4 @@ vendor
 composer-setup.php
 composer.phar
 composer.lock
+fetcherLog.txt

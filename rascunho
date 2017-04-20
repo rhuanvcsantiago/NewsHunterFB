@@ -118,3 +118,17 @@
   full_picture_link |  full_picture   |   entities->media->media_url             
                     |                 |                 
 =========================================================
+
+
+SUGESTOES
+- YII COMANDS
+- LOG: GERAR EVENTOS RATCHET
+- ACTIVE RECORD
+
+
+TODO
+FETCHER SERVER
+- Colocar configurações em um OBJ configuracoes.
+- Colocar nomes de campos em configurações.
+    - Alternativa -> Criar Classes FacebookNews e TwitterNews
+- Adicionar no SEND -> type: info or data
