@@ -126,9 +126,24 @@ SUGESTOES
 - ACTIVE RECORD
 
 
-TODO
-FETCHER SERVER
-- Colocar configurações em um OBJ configuracoes.
-- Colocar nomes de campos em configurações.
-    - Alternativa -> Criar Classes FacebookNews e TwitterNews
-- Adicionar no SEND -> type: info or data
+____:::: TODO ::::_____
+
+FETCHER SERVER 1.0
+- Resolver charset
+    - no save do banco 
+    - no fetch da nuvem 
+
+FETCHER SERVER 2.0
+- Criar arquivo PHP para guardar configuracoes  
+    - tipos configuracoes
+        - facebook / twitter 
+            - campos especificos
+            - autenticacao
+        - dados acesso ao database    
+
+- Fragmentar mais em mais funções.
+- Modificar Envio de mensagens para o client.
+    - Enviar JSON
+    - Especificar tipo de mensagem
+        - INFO
+        - DATA        

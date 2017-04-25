@@ -430,8 +430,7 @@ class FetcherServer implements MessageComponentInterface {
     }
     private function log( $msg ){
         $fd = fopen("fetcherLog.txt", "a"); 
-        date_default_timezone_set('America/Fortaleza');
-        fwrite($fd, date('Y-m-d H:i:s') . " => \t" . $msg ); 
+        fwrite($fd, $msg ); 
         fclose($fd);
     }
     private function send( $msg ){
@@ -444,10 +443,13 @@ class FetcherServer implements MessageComponentInterface {
         $ident = "";
 
         for( $i = 0; $i<$lvl; $i++ ){
-            $ident .= "\t";
+            $ident .= "     ";
         }
         
-        $msg = $ident.$msg."\n";
+        date_default_timezone_set('America/Fortaleza');
+        $data = date('Y-m-d H:i:s');
+        
+        $msg = $data. ":  " . $ident.$msg."\n";
 
         $this->log ( $msg );
         echo $msg;
