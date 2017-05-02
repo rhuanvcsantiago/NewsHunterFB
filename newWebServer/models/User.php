@@ -2,103 +2,90 @@
 
 namespace app\models;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+use Yii;
+
+/**
+ * This is the model class for table "User".
+ *
+ * @property integer $id
+ * @property string $email
+ * @property string $password
+ * @property string $googleAUTH
+ * @property string $facebookAUTH
+ * @property integer $sendEmail
+ * @property integer $sendNotifications
+ *
+ * @property UserFollowInstitute[] $userFollowInstitutes
+ * @property Institute[] $institutes
+ * @property UserReadNews[] $userReadNews
+ * @property News[] $news
+ */
+class User extends \yii\db\ActiveRecord
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
     /**
      * @inheritdoc
      */
-    public static function findIdentity($id)
+    public static function tableName()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return 'User';
     }
 
     /**
      * @inheritdoc
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function rules()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return [
+            [['sendEmail', 'sendNotifications'], 'integer'],
+            [['email', 'password', 'googleAUTH', 'facebookAUTH'], 'string', 'max' => 45],
+        ];
     }
 
     /**
      * @inheritdoc
      */
-    public function getId()
+    public function attributeLabels()
     {
-        return $this->id;
+        return [
+            'id' => 'ID',
+            'email' => 'Email',
+            'password' => 'Password',
+            'googleAUTH' => 'Google Auth',
+            'facebookAUTH' => 'Facebook Auth',
+            'sendEmail' => 'Send Email',
+            'sendNotifications' => 'Send Notifications',
+        ];
     }
 
     /**
-     * @inheritdoc
+     * @return \yii\db\ActiveQuery
      */
-    public function getAuthKey()
+    public function getUserFollowInstitutes()
     {
-        return $this->authKey;
+        return $this->hasMany(UserFollowInstitute::className(), ['User_id' => 'id']);
     }
 
     /**
-     * @inheritdoc
+     * @return \yii\db\ActiveQuery
      */
-    public function validateAuthKey($authKey)
+    public function getInstitutes()
     {
-        return $this->authKey === $authKey;
+        return $this->hasMany(Institute::className(), ['id' => 'Institute_id'])->viaTable('User_follow_Institute', ['User_id' => 'id']);
     }
 
     /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
+     * @return \yii\db\ActiveQuery
      */
-    public function validatePassword($password)
+    public function getUserReadNews()
     {
-        return $this->password === $password;
+        return $this->hasMany(UserReadNews::className(), ['User_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getNews()
+    {
+        return $this->hasMany(News::className(), ['id' => 'News_id'])->viaTable('User_read_News', ['User_id' => 'id']);
     }
 }

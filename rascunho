@@ -149,3 +149,9 @@ FETCHER SERVER 2.0
     - Especificar tipo de mensagem
         - INFO
         - DATA        
+
+
+News
+app\models\Institute
+app\controllers\InstituteController
+@app/views/admin

@@ -65,12 +65,29 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render("index");
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand("SELECT institute_name, broadcaster_name, news_created_time, news_title, news_content, news_expanded_content, news_shared_link, news_full_picture_link, news_id FROM  NewsHunterFFB.ibn where is_relevant is null order by institute_name, broadcaster_name;");
+        $result = $command->queryAll();
+
+        return $this->render( 'index', ['result' => $result] );
     }
 
     public function actionCadastros()
     {
+        //$this->redirect("index.php?r=institute");
         return $this->render("cadastros");
+    }
+
+    public function actionManageinstitute()
+    {
+        $this->redirect("index.php?r=institute");
+        //return $this->render("cadastros");
+    }
+
+    public function actionManagenews()
+    {
+        $this->redirect("index.php?r=news");
+        //return $this->render("cadastros");
     }
 
     public function actionFetcher()
@@ -85,8 +102,38 @@ class AdminController extends Controller
 
     public function actionUpdatenews()
     {
+        //$this->layout = "";
+        // atualiza news
+        //renderiza pagina de classificar novamente
+        // return $this->actionClassifier();
+        $request = Yii::$app->request;
+        $data = $request->post();
+
+        $query = "START TRANSACTION;\nUSE NewsHunterFFB;\n";
+
         
-        echo "teste";
+        if( isset($data["ignore"]) ){
+
+            foreach ($data["ignore"] as $index => $news_id) {
+                $query .= "UPDATE Institute_has_Broadcaster_has_News SET is_relevant = FALSE WHERE news_id=". $news_id . ";\n";
+            }
+        }
+
+        if( isset($data["approve"]) ){
+           foreach ($data["approve"] as $index => $news_id) {     
+                $query .= "UPDATE Institute_has_Broadcaster_has_News SET is_relevant = TRUE WHERE news_id=". $news_id . ";\n";
+            }
+        }
+
+        $query .= "COMMIT;";
+
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand($query);
+        $result = $command->queryAll();
+        
+        //return $this->render( 'updateNews', ['result' => $result] );
+
+        //echo $query;
 
     }
 

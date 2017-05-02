@@ -60,6 +60,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        
+        // Se não logado -> LandingPage
+        // Se logado
+            // admin
+            // user
         return $this->render('index');
     }
 

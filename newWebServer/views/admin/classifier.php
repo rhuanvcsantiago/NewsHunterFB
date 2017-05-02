@@ -200,12 +200,13 @@
            
            console.log( JSON.stringify({aprove: NEWS_LIST_TO_APPROVE, ignore: NEWS_LIST_TO_IGNORE  }) );
 
-            var jqxhr = $.post( "/index.php?r=admin/updatenews", { update: { ignore: NEWS_LIST_TO_IGNORE , approve: NEWS_LIST_TO_APPROVE } } )
+            var jqxhr = $.post( "/index.php?r=admin/updatenews", { ignore: NEWS_LIST_TO_IGNORE , approve: NEWS_LIST_TO_APPROVE } )
             .done(function() {
                 $("#requestResponse").html( jqxhr.responseText );
             })
-            .fail(function() {
-                $("#requestResponse").append( "<h2> deu pau ! EITA! </h2>" );
+            .fail(function(err) {
+                $("#requestResponse").append( "<h2> deu pau ! EITA! </h2>");
+                console.log(err)
             })
             .always(function() {
                 // apaga o gif de load

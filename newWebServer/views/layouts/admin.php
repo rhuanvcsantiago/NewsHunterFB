@@ -67,19 +67,16 @@ use app\assets\AppAsset;
                         <?= Html::a('Cadastros', ['admin/cadastros'] ) ?>
                         <ul id="cadastroSubmenu">
                             <li>
-                                Institutos
+                                <?= Html::a('Instituto', ['institute/index'] ) ?>
                             </li>
                             <li>
-                                Broadcasters
+                                <?= Html::a('Broadcasters', ['broadcaster/index'] ) ?>
                             </li>
                             <li>
-                                Emails
+                                <?= Html::a('Notícias', ['news/index'] ) ?>
                             </li>
                             <li>
-                                Notícias
-                            </li>
-                            <li>
-                                Usuários
+                                <?= Html::a('Usuários', ['user/index'] ) ?>
                             </li>
                         </ul>
                     </li>    
