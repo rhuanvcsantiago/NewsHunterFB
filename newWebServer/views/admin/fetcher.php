@@ -69,7 +69,7 @@
                             <span class="glyphicon glyphicon-chevron-down"></span>
                         </button>
                         <ul class="dropdown-menu slidedown">
-                            <li><a href="#" onClick="connection.send('fetch');"><span class="glyphicon glyphicon-refresh">
+                            <li><a href="#" onClick="webSocketConn.send('fetch');"><span class="glyphicon glyphicon-refresh">
                             </span>Fetch All</a></li>
                             <li><a href="#"><span class="glyphicon glyphicon-ok-sign">
                             </span>Available</a></li>
@@ -94,38 +94,55 @@
     function createChatRow(text){
 
         var rowText = text || "";
-        var chatRow = '<li class="left clearfix">'
+        var chatRow = '<li class="left">'
                         + '<div class="chat-body clearfix"'
-                        + '     <>' +  rowText  +  '</p>'
+                        + '     <>' +  rowText.replace(/ /g, "&nbsp")  +  '</p>'
                         + '</div>'
                      +'</li>';    
 
         return chatRow;         
     }
     
-    var connection = new WebSocket('ws://localhost:8387');
     
-    connection.onopen = function () {
-        $("#chatwindow").append( createChatRow("conectado ao servidor socket") );
-        //connection.send('Ping'); // Send the message 'Ping' to the server
-    };
+    function connectToFetcher(){
 
-    // Log errors
-    connection.onerror = function(error) {
-        $("#chatwindow").append( createChatRow(error.data) );
-    };
+        webSocketConn = new WebSocket('ws://localhost:8387');
 
-    // Log messages from the server
-    connection.onmessage = function (e) {
-        $("#chatwindow").append( createChatRow(e.data) );
-        //$("#chatwindow").children().last().focus();
-    };
+        webSocketConn.onopen = function () {
+            $("#chatwindow").append( createChatRow("conectado ao servidor socket") );
+            //webSocketConn.send('Ping'); // Send the message 'Ping' to the server
+        };
 
-    function clearConsole(){
+        // Log errors
+        webSocketConn.onerror = function(error) {
+            $("#chatwindow").append( createChatRow("erro na conexão;") );
+        };
+
+        // Log messages from the server
+        webSocketConn.onmessage = function (e) {
+            $("#chatwindow").append( createChatRow(e.data) );
+            console.log(e.data);
+            //$("#chatwindow").children().last().focus();
+        };    
+
+    }
+
+    
+    
+    function checkWebSocketConnection(socket){
+       
+        if( socket.readyState == socket.CLOSED ){                        
+            connectToFetcher();      
+        }
+    }
+
+    function clearConsole() {
         $("#chatwindow").empty();
     }
-    //connection.send('your message');      
-    //connection.send('your message');       
+
+    connectToFetcher();
+    setInterval( "checkWebSocketConnection(webSocketConn)", 5000);
+
 
  </script>           
  

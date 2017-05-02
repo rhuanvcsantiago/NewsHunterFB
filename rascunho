@@ -132,6 +132,8 @@ FETCHER SERVER 1.0
 - Resolver charset
     - no save do banco 
     - no fetch da nuvem 
+- Traduzir LOG do Socket para portugues.
+- Resolver problema de envio de menssagens no final do loop do RATCHET. Treads?
 
 FETCHER SERVER 2.0
 - Criar arquivo PHP para guardar configuracoes  

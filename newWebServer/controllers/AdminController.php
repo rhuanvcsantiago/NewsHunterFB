@@ -83,25 +83,26 @@ class AdminController extends Controller
         return $this->render('sendEmails');
     }
 
+    public function actionUpdatenews()
+    {
+        
+        echo "teste";
+
+    }
+
+    public function beforeAction($action) {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+
     public function actionClassifier()
     {
-         //$this->layout = 'yourNewLayout';    
-        $query = News::find();
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand("SELECT institute_name, broadcaster_name, news_created_time, news_title, news_content, news_expanded_content, news_shared_link, news_full_picture_link, news_id FROM  NewsHunterFFB.ibn where is_relevant is null order by institute_name, broadcaster_name;");
+        $result = $command->queryAll();
 
-        $pagination = new Pagination([
-            'defaultPageSize' => 5,
-            'totalCount' => $query->count(),
-        ]);
-
-        $news = $query->orderBy('id')
-            ->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
-
-        return $this->render('classifier', [
-            'newsArray' => $news,
-            'pagination' => $pagination,
-        ]);
+        return $this->render( 'classifier', ['result' => $result] );
+        
     }
 
     public function actionConfigs()

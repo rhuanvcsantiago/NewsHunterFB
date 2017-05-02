@@ -65,6 +65,23 @@ use app\assets\AppAsset;
                     </li>
                     <li <?php  if(Yii::$app->controller->action->id == "cadastros") echo 'class="active"'; ?>>
                         <?= Html::a('Cadastros', ['admin/cadastros'] ) ?>
+                        <ul id="cadastroSubmenu">
+                            <li>
+                                Institutos
+                            </li>
+                            <li>
+                                Broadcasters
+                            </li>
+                            <li>
+                                Emails
+                            </li>
+                            <li>
+                                Notícias
+                            </li>
+                            <li>
+                                Usuários
+                            </li>
+                        </ul>
                     </li>    
                     <li <?php  if(Yii::$app->controller->action->id == "fetcher") echo 'class="active"'; ?>>
                         <?= Html::a('Buscador', ['admin/fetcher'] ) ?>

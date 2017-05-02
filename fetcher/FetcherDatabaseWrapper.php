@@ -34,6 +34,10 @@ class FetcherDatabaseWrapper {
             throw new Exception("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error); 
         } else {
             $this->mysqli = $mysqli;
+           // mysql_query("SET NAMES 'utf8'");
+           // mysql_query('SET character_set_connection=utf8');
+           // mysql_query('SET character_set_client=utf8');
+           // mysql_query('SET character_set_results=utf8');
         }                 
     }
 

@@ -275,7 +275,7 @@ class FetcherServer implements MessageComponentInterface {
             $name           = mysql_escape_mimic( utf8_encode( $post["name"] ));            // title
             $message        = mysql_escape_mimic( utf8_encode( $post["message"] ) );         // content
             $description    = mysql_escape_mimic( utf8_encode( $post["description"] ) );     // expanded_content
-            $link           = $post["lnk"];                                         // shared_link
+            $link           = $post["link"];                                         // shared_link
             $full_picture   = $post["full_picture"];                                 // full_picture_link      
 
             date_default_timezone_set('America/Fortaleza');
