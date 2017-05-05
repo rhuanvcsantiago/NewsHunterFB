@@ -150,8 +150,21 @@ FETCHER SERVER 2.0
         - INFO
         - DATA        
 
-
-News
-app\models\Institute
-app\controllers\InstituteController
-@app/views/admin
+:: DUVIDAS yii2 PARA TIRAR
+- controle de login
+- estrutura de controllers e delegação de papeis
+    - landing page
+    - admin page
+        - redirects
+    - user page
+- active records
+    - relacionamentos
+    - transacoes
+- organizacao de tipos de código nas views
+    - css
+    - html
+    - javascript
+    - default template
+- actions / updates / renders
+    - tenho a opção de no mesmo action, ter um IF para ou mostrar a tela sem fazer nada, ou fazer algo antes e depois mostrar a tela, exemplo enviar emails e depois dar refresh na tela.
+    - a outra opção era criar um action para update, mas ai teria que chamar a funcao de mostrar a tela posteriormente e como ficaria a passagem de parametros para mostrar?

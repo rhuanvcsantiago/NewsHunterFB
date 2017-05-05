@@ -1,4 +1,24 @@
 
+<?php if( $updateResult["result"] == "success" ): ?>
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button
+        <strong>SUCESSO!</strong> Notícias classificadas corretamente. 
+        <br />
+        <?= "ignoradas:" . json_encode( $updateResult["ignore"] )  ?>
+        <?= "aprovadas:" . json_encode( $updateResult["approve"] ) ?> 
+    </div>    
+<?php endif; ?>    
+
+<?php if( $updateResult["result"] == "error" ): ?>
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button
+        <strong>ERRO!</strong> Algo aconteceu ao salvar no banco de dados. Entre em contato com o responsável pelo sistema.
+    </div>
+<?php endif; ?>
 
 <button  id="botaoConcluir" type="button" class="btn btn-primary btn-lg">CONCLUIR ALTERACOES</button>
 &nbsp&nbsp<h4 style="display:inline;"> [ <a id="labelIgnorados">0</a> ] ignorados [ <a id="labelAprovados">0</a> ] aprovados </h4>
@@ -197,22 +217,33 @@
     })
 
     $("#botaoConcluir").on("click", function(){
-           
-           console.log( JSON.stringify({aprove: NEWS_LIST_TO_APPROVE, ignore: NEWS_LIST_TO_IGNORE  }) );
 
-            var jqxhr = $.post( "/index.php?r=admin/updatenews", { ignore: NEWS_LIST_TO_IGNORE , approve: NEWS_LIST_TO_APPROVE } )
-            .done(function() {
-                $("#requestResponse").html( jqxhr.responseText );
-            })
-            .fail(function(err) {
-                $("#requestResponse").append( "<h2> deu pau ! EITA! </h2>");
-                console.log(err)
-            })
-            .always(function() {
-                // apaga o gif de load
-                // $("#content").append( "funcao alway" );
-            }); 
+        var redirect = '/index.php?r=admin/classifier';
+
+        // jquery extend function
+        $.extend(
+        {
+            redirectPost: function(location, args)
+            {
+                var form = '';
+                $.each( args, function( key, value ) {
+                    //console.log( "chave:" + key );
+                    //console.log( "valor:" + value ";
+                    value = value.split('"').join("\"");
+                    form += '<input type="hidden" name="'+key+'" value=\''+value+'\'>';
+                });
+                $('<form action="' + location + '" method="POST">' + form + '</form>').appendTo($(document.body)).submit();
+            }
         });
+
+        $.redirectPost( redirect, { 
+                                        approve: JSON.stringify( NEWS_LIST_TO_APPROVE ), 
+                                        ignore:  JSON.stringify( NEWS_LIST_TO_IGNORE )
+                                  }
+                      );
+
+    });    
+
 
 </script>
 

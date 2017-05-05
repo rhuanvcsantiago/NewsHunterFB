@@ -14,7 +14,8 @@
     print_r($lineInfo.$debugInfo);
 }
 
-    //debug($result);
+    debug($updateResult);
+    debug($result);
 
 ?>
 
