@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Institute;
+use yii\filters\AccessControl;
 use app\models\InstituteSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -21,10 +22,21 @@ class InstituteController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['GET'],
+                    'delete' => ['post', 'get'],
                 ],
             ],
         ];

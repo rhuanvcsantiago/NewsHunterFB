@@ -31,7 +31,7 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['post', 'get'],
                 ],
             ],
         ];
@@ -60,12 +60,30 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $request = Yii::$app->request;
+        $connection = Yii::$app->getDb();
+        $data = $request->get();
+
+        $msg = "nada";
         
+        if( isset($data["email"]) && ( $data["email"] != "" ) ){
+            
+            try{
+                $query = "INSERT INTO user (email) VALUES ('". $data["email"] ."');";
+                $numberRowsAffected = $connection->createCommand($query)->execute();        
+            }
+            catch (Exception $e) {
+                $msg = 'Exceção capturada: ' .  $e->getMessage() . "\n";    
+            }
+            
+            $msg = "email [" . $data["email"] . "] cadastrado com sucesso: " . $numberRowsAffected;
+
+        }
         // Se não logado -> LandingPage
         // Se logado
             // admin
             // user
-        return $this->render('index');
+        return $this->render('index', ["msg" => $msg] );
     }
 
     /**

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Broadcaster;
+use yii\filters\AccessControl;
 use app\models\BroadcasterSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -22,10 +23,21 @@ class BroadcasterController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['post', 'get'],
                 ],
             ],
         ];

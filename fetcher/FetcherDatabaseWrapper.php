@@ -22,6 +22,14 @@ function mysql_escape_mimic($inp) {
     return $inp; 
 } 
 
+function replace4byte($string) {
+    return preg_replace('%(?:
+          \xF0[\x90-\xBF][\x80-\xBF]{2}      # planes 1-3
+        | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
+        | \xF4[\x80-\x8F][\x80-\xBF]{2}      # plane 16
+    )%xs', '', $string);    
+}
+
 
 class FetcherDatabaseWrapper {
     private $mysqli = null;
@@ -34,11 +42,16 @@ class FetcherDatabaseWrapper {
             throw new Exception("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error); 
         } else {
             $this->mysqli = $mysqli;
-           // mysql_query("SET NAMES 'utf8'");
-           // mysql_query('SET character_set_connection=utf8');
-           // mysql_query('SET character_set_client=utf8');
-           // mysql_query('SET character_set_results=utf8');
-        }                 
+            printf("Initial database character set: %s\n", $this->mysqli->character_set_name());
+
+            /* change character set to utf8 */
+            if (!$mysqli->set_charset("utf8")) {
+                printf("Error loading database character set utf8: %s\n", $this->mysqli->error);
+                exit();
+            } else {
+                printf("Current database character set: %s\n", $this->mysqli->character_set_name());
+            }
+        }  
     }
 
     public function query( $sql ){

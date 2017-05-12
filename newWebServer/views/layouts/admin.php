@@ -51,7 +51,6 @@ use app\assets\AppAsset;
 <body>
 
     <div class="navbar navbar-default">
-        <p>Header Text</p>
     </div>
 
     <div class="container-fluid">
@@ -60,10 +59,16 @@ use app\assets\AppAsset;
                 <h4>Admin Painel</h4>
                 
                 <ul class="nav nav-pills nav-stacked">
-                    <li <?php  if(Yii::$app->controller->action->id == "index") echo 'class="active"'; ?> >
+                    <?php 
+                    
+                        $controllerName = Yii::$app->controller->id; 
+                        $actionName = Yii::$app->controller->action->id ;
+                    
+                    ?>
+                    <li <?php  if( ($controllerName=="admin") &&($actionName=="index") ) echo 'class="active"'; ?> >
                         <?= Html::a('Inicial', ['admin/index'] ) ?>
                     </li>
-                    <li <?php  if(Yii::$app->controller->action->id == "cadastros") echo 'class="active"'; ?>>
+                    <li <?php  if( ($controllerName!="admin"&&$actionName=="index") || $actionName=="cadastros" ) echo 'class="active"'; ?>>
                         <?= Html::a('Cadastros', ['admin/cadastros'] ) ?>
                         <ul id="cadastroSubmenu">
                             <li>
@@ -80,13 +85,13 @@ use app\assets\AppAsset;
                             </li>
                         </ul>
                     </li>    
-                    <li <?php  if(Yii::$app->controller->action->id == "fetcher") echo 'class="active"'; ?>>
+                    <li <?php  if( ($controllerName=="admin")&&($actionName=="fetcher") ) echo 'class="active"'; ?>>
                         <?= Html::a('Buscador', ['admin/fetcher'] ) ?>
                     </li>
-                    <li <?php  if(Yii::$app->controller->action->id == "classifier") echo 'class="active"'; ?>>
+                    <li <?php  if( ($controllerName=="admin")&&($actionName=="classifier") ) echo 'class="active"'; ?>>
                         <?= Html::a('Classificador', ['admin/classifier'] ) ?>
                     </li>
-                    <li <?php  if(Yii::$app->controller->action->id == "sendemails") echo 'class="active"'; ?>>
+                    <li <?php  if( ($controllerName=="admin")&&($actionName=="sendemails") ) echo 'class="active"'; ?>>
                         <?= Html::a('Enviar Emails', ['admin/sendemails'] ) ?>
                     </li>
                 </ul>
@@ -99,7 +104,6 @@ use app\assets\AppAsset;
     </div>
 
     <footer class="container-fluid">
-        <p>Footer Text</p>
     </footer>
 
 </body>

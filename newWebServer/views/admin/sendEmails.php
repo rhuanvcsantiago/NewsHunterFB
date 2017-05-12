@@ -20,6 +20,7 @@
 <button  id="botaoEnviarEmails" type="button" class="btn btn-primary btn-lg">ENVIAR EMAILS</button>
 <br/>
 
+<h2>[ <a href="#"><?php echo count($result) ?></a> ] notícias classificadas e não enviadas.</h2>
 <div class="table-responsive table-striped ">
   <table class="table table-hover">
     <thead>

@@ -24,10 +24,10 @@ class AdminController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['*'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        //'actions' => ['index', 'cadastros', 'manageinstitute', 'managenews', 'fetcher', 'sendemails', 'classifier', 'logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -36,7 +36,7 @@ class AdminController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['post', 'get'],
                 ],
             ],
         ];
@@ -98,11 +98,13 @@ class AdminController extends Controller
         $connection = Yii::$app->getDb();
 
         // [done] pegar lista de noticias a serem enviadas.
-        $command = $connection->createCommand("SELECT institute_name, broadcaster_name, news_created_time, news_title, news_content, news_expanded_content, news_shared_link, news_full_picture_link, news_id FROM  NewsHunterFFB.ibn where is_relevant is null order by institute_name, broadcaster_name;");
+        $queryNewsNotSended = "SELECT institute_name, broadcaster_name, news_created_time, news_title, news_content, news_expanded_content, news_shared_link, news_full_picture_link, news_id, mail_sent FROM  NewsHunterFFB.ibn where is_relevant is true and mail_sent is null order by institute_name, broadcaster_name;";
+        $command = $connection->createCommand( $queryNewsNotSended );
         $newsNotSended = $command->queryAll();
 
-        // [done] pegar lista de emails.        
-        $command = $connection->createCommand("SELECT email FROM  User");
+        // [done] pegar lista de emails.
+        $queryMailList = "SELECT email FROM User";        
+        $command = $connection->createCommand( $queryMailList );
         $mailsToSend = $command->queryAll();
 
         $updateResult = [];
@@ -111,35 +113,56 @@ class AdminController extends Controller
 
         // se chegar aqui atraves de post e tiver o dado sim => enviar emails.
         if ( $request->getIsPost() && ( $request->post()["enviar"] == "sim") ){
-            $updateResult["enviar"] = "entrou";
 
-            if( ( count($newsNotSended) > 0 ) && ( count($newsNotSended) > 0 ) )
-            // montar email design.
-            Yii::$app->mailer->compose()
-    ->setFrom('from@domain.com')
-    ->setTo('to@domain.com')
-    ->setSubject('Message subject')
-    ->setTextBody('Plain text content')
-    ->setHtmlBody('<b>HTML content</b>')
-    ->send();
-    /*        
-            Yii::$app->mailer->compose( 'emailnews',["lastNews" => $newsNotSended] ) // a view rendering result becomes the message body here
-                ->setFrom('from@domain.com')
-                ->setTo('to@domain.com')
-                ->setSubject('Message subject')
-                ->send();
-*/
-            $updateResult["result"] = "success";
+            /* save execution time */
+            date_default_timezone_set('America/Fortaleza');
+            $time = date("Y-m-d H:i:s");
+            $queryInsertExecution = 'INSERT INTO Execution (type, timestamp) values("mail", "' . $time . '")';
+            $command = $connection->createCommand( $queryInsertExecution );
+            $command->execute();  
+            /* save execution time */          
 
-            // Testing and debugging
-            // yii\mail\BaseMailer::useFileTransport
-            
-            // enviar emails;
-            // transaction update das noticias enviadas.
-                // mostrar tela novamente com erros ou sem erros.
-                // $updateResult["result"] = "success";
-                // $updateResult["result"] = "error";
+            $updateResult["result"] = "error";
+
+            if( (count($newsNotSended) > 0) && (count($mailsToSend) > 0) ){
+                
+                //PEGAR DADOS USUARIO -> ASSINOU -> ENTIDADE
+
+                // !!! REQUISICAO DEMORA MUITO
+                // ACHAR UM JEITO TIPO WEBSOCKETS OU AJAX DE ACOMPANHAR ENVIO DE EMAIL POR EMAIL
+                foreach ($mailsToSend as $position => $user) {
+                    Yii::$app->mailer->compose( 'emailnews2',["lastNews" => $newsNotSended] ) // a view rendering result becomes the message body here
+                        ->setFrom('phodaoce@gmail.com')
+                        ->setTo( $user["email"] )
+                        ->setSubject('Novidades News Hunter FFB')
+                        ->send();
+                }
+
+                try {
+                    $transaction = $connection->beginTransaction();
+
+                    foreach ($newsNotSended as $position => $news) {
+                        $query = "UPDATE Institute_has_Broadcaster_has_News SET mail_sent = TRUE WHERE news_id=". $news["news_id"] . ";\n";
+                        $connection->createCommand( $query )->execute();
+                    }
+
+                    $transaction->commit();
+                    $updateResult["result"] = "success";
+
+                } catch (\Exception $e) {
+                    $transaction->rollBack();
+                    $updateResult["result"] = "error";
+                    //throw $e;
+                } catch (\Throwable $e) {
+                    $transaction->rollBack();
+                    $updateResult["result"] = "error";
+                    //throw $e;
+                }
+            }       
         }
+
+        $command = $connection->createCommand( $queryNewsNotSended );
+        $newsNotSended = $command->queryAll();
 
         return $this->render('sendEmails', ['result' => $newsNotSended, 'updateResult' => $updateResult]);
     }
@@ -208,9 +231,4 @@ class AdminController extends Controller
         
     }
 
-    public function actionConfigs()
-    {
-        echo "institutos e broadcasters";
-        //return $this->render('teste');
-    }
 }

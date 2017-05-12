@@ -5,8 +5,17 @@ use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 
+header('Content-Type: text/html; charset=utf-8');
+
 require dirname(__DIR__) . '/vendor/autoload.php';
 require 'FetcherDatabaseWrapper.php';
+
+function parseUTF8( $msg ){
+
+       return preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
+                    return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+                }, $msg); 
+    }
 
 class FetcherServer implements MessageComponentInterface {
     protected $clients;
@@ -67,7 +76,7 @@ class FetcherServer implements MessageComponentInterface {
             $tweet_image        = "";
             
             if( isset( $tweetObject->id ) )
-                $tweet_id = $tweetObject->id;
+                $tweet_id = $tweetObject->id ;
 
             if( isset( $tweetObject->created_at ) )
                 $tweet_created_at = $tweetObject->created_at; 
@@ -76,10 +85,10 @@ class FetcherServer implements MessageComponentInterface {
                 $tweet_text = $tweetObject->text;
 
             if( isset( $tweetObject->entities->urls[0]->expanded_url ) )
-                $tweet_link = $tweetObject->entities->urls[0]->expanded_url;
+                $tweet_link =  $tweetObject->entities->urls[0]->expanded_url ;
 
             if( isset( $tweetObject->entities->media[0]->media_url ) )
-                $tweet_image = $tweetObject->entities->media[0]->media_url;                    
+                $tweet_image = $tweetObject->entities->media[0]->media_url ;                    
 
             $tweet_array = array(
                                     "id"            => $tweet_id, 
@@ -139,9 +148,14 @@ class FetcherServer implements MessageComponentInterface {
             do {
                 /* log */ $this->log_and_send( "getting page number [ ".$pageNumber." ]", 4 );
                 //GETTING PAGE DATA
-                $data = file_get_contents($request_link);            
-                $data = json_decode($data, true);
+                $data = file_get_contents($request_link);
+                
+                $data = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
+                    return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+                }, $data);
 
+                $data = json_decode($data, true);
+                
                 $page_last_post_index   = count($data["data"])-1;
                 $page_last_post         = $data["data"][$page_last_post_index];
                 $page_last_post_key     = explode( "_", $page_last_post["id"] )[1];
@@ -193,7 +207,7 @@ class FetcherServer implements MessageComponentInterface {
                                                             "name"          => $name,
                                                             "message"       => $message,
                                                             "description"   => $description,
-                                                            "lnk"           => $link,
+                                                            "link"           => $link,
                                                             "full_picture"  => $full_picture
                                                     );
 
@@ -223,12 +237,20 @@ class FetcherServer implements MessageComponentInterface {
     }
 
     public function fetchAllNews(){
+
+        /* save execution time */
+            date_default_timezone_set('America/Fortaleza');
+            $time = date("Y-m-d H:i:s");
+            $sql = 'INSERT INTO Execution (type, timestamp) values("fetcher", "' . $time . '")'; 
+            if( $this->database->query($sql) !== 1)  
+                $this->log_and_send("error saving fetcher execution timestamp:" . $this->database->error() ); 
+        /* save execution time */
+
         /* log */ $this->log_and_send( "fetching all news" , 1);
         foreach ($this->data as $institute_name => $broadcaster_array) {
+            /* log */ $this->log_and_send( "fetching [ " . $institute_name . " ] news.", 2);
             foreach ($broadcaster_array as $broadcaster_name => $broadcaster_properties) {
-                
-                /* log */ $this->log_and_send( "fetching [ " . $institute_name . " ] news.", 2);
-                
+                                
                 switch ( $broadcaster_name ) {
                     
                     case 'SITE':
@@ -255,6 +277,7 @@ class FetcherServer implements MessageComponentInterface {
                         break;
                 }
             }
+            /* log */ $this->log_and_send( "fetching on [ ".$broadcaster_name." ] END", 3);
         }
         /* log */ $this->log_and_send( "fetching all news FINISHED", 1);
     }
@@ -272,9 +295,9 @@ class FetcherServer implements MessageComponentInterface {
             $access_key     = $post["id"];                                       // access_key
             $created_time   = $post["created_time"];                             // created_time
             $type           = $post["type"];                                         // type
-            $name           = mysql_escape_mimic( utf8_encode( $post["name"] ));            // title
-            $message        = mysql_escape_mimic( utf8_encode( $post["message"] ) );         // content
-            $description    = mysql_escape_mimic( utf8_encode( $post["description"] ) );     // expanded_content
+            $name           = mysql_escape_mimic( $post["name"] );            // title
+            $message        = mysql_escape_mimic( $post["message"]  );         // content
+            $description    = mysql_escape_mimic( $post["description"]  );     // expanded_content
             $link           = $post["link"];                                         // shared_link
             $full_picture   = $post["full_picture"];                                 // full_picture_link      
 
@@ -313,7 +336,6 @@ class FetcherServer implements MessageComponentInterface {
         }
     }
 
-
     public function saveTwitterNews( $institute_name ){
         /* log */ $this->log_and_send( "saving [ TWITTER ] news.", 4);
 
@@ -326,7 +348,10 @@ class FetcherServer implements MessageComponentInterface {
                                                                                  // DATA BASE FIELDS
             $id             = $post["id"];                                           // acess_key
             $created_at     = $post["created_at"];                                   // created_time
-            $text           = mysql_escape_mimic( utf8_encode( $post["text"] ) );    // content
+            
+            $text           = $post["text"] ; 
+            $text           = replace4byte( $text ); 
+         
             $expanded_url   = $post["link"];                                         // shared_link
             $media_url      = $post["image"];                                        // full_picture_link
 
