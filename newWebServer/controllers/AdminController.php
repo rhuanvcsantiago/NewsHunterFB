@@ -69,7 +69,15 @@ class AdminController extends Controller
         $command = $connection->createCommand("SELECT institute_name, broadcaster_name, news_created_time, news_title, news_content, news_expanded_content, news_shared_link, news_full_picture_link, news_id FROM  NewsHunterFFB.ibn where is_relevant is null order by institute_name, broadcaster_name;");
         $result = $command->queryAll();
 
-        return $this->render( 'index', ['result' => $result] );
+        $queryMaxIds = "SELECT max(id) as id, `type` FROM Execution group by type";
+        $command = $connection->createCommand( $queryMaxIds );
+        $MaxIds = $command->queryAll();
+
+        $queryLastExecutions  = "select `type`, `timestamp` as lastExecutionTime FROM Execution where id = ".$MaxIds[0]["id"]." or id = ".$MaxIds[1]["id"]." ";
+        $command = $connection->createCommand( $queryLastExecutions );
+        $lastExecutions = $command->queryAll();
+
+        return $this->render( 'index', ['result' => $result, 'lastExecutions' => $lastExecutions] );
     }
 
     public function actionCadastros()

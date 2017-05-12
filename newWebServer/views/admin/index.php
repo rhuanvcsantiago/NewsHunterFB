@@ -1,17 +1,5 @@
 <?php
 
-function debug() {
-    $trace = debug_backtrace();
-    $rootPath = dirname(dirname(__FILE__));
-    $file = str_replace($rootPath, '', $trace[0]['file']);
-    $line = $trace[0]['line'];
-    $var = $trace[0]['args'][0];
-    $lineInfo = sprintf('<div><strong>%s</strong> (line <strong>%s</strong>)</div>', $file, $line);
-    $debugInfo = sprintf('<pre>%s</pre>', print_r($var, true));
-    print_r($lineInfo.$debugInfo);
-}
-
-
     $result = array_reverse($result);
 
     $ibn_array = [];
@@ -100,14 +88,22 @@ function debug() {
         <?php echo $tableString?>
     </li>
     <br />
-    <li>
-        <h3>[ <a>2017-05-01 19:00:00</a> ] foi ultima data de execução do fetcher.</h3>
-    </li>
-    <br />
-    <li>
-        <h3>[ <a>2017-05-01 19:00:00</a> ] foi ultimo envio de emails.</h3>
-    </li>
-    <br />
+
+    <?php 
+        foreach ($lastExecutions as $position => $lastExecution) {
+            
+            if($lastExecution["type"] == "fetcher"){
+                echo "<li><h3>[ <a>".$lastExecution["lastExecutionTime"]."</a> ] foi ultima data de execução do fetcher.</h3></li>";
+            } else {
+                echo "<li><h3>[ <a>".$lastExecution["lastExecutionTime"]."</a> ] foi ultimo envio de emails.</h3></li>"; 
+            }
+
+            echo "<br />";
+
+        }
+    
+    ?>
+
 <ul>
 <br />
 
