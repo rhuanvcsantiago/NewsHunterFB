@@ -9,14 +9,19 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
+AppAsset::register($this);
 ?>
 
+<?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= Yii::$app->language ?>">
 <head>
   <title>Admin Painel</title>
-  <meta charset="utf-8">
+  <meta charset="<?= Yii::$app->charset ?>">
+  <!-- <meta charset="utf-8"> -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <?php $this->head() ?>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -49,6 +54,7 @@ use app\assets\AppAsset;
   </style>
 </head>
 <body>
+<?php $this->beginBody() ?>
 
     <div class="navbar navbar-default">
     </div>
@@ -56,7 +62,7 @@ use app\assets\AppAsset;
     <div class="container-fluid">
         <div class="row content">
             <div class="col-sm-2 sidenav">
-                <h4>Admin Painel</h4>
+                <br/ >
                 
                 <ul class="nav nav-pills nav-stacked">
                     <?php 
@@ -78,6 +84,9 @@ use app\assets\AppAsset;
                                 <?= Html::a('Broadcasters', ['broadcaster/index'] ) ?>
                             </li>
                             <li>
+                                <?= Html::a('Inst & Broad', ['institute-has-broadcaster/index'] ) ?>
+                            </li>
+                            <li>
                                 <?= Html::a('Notícias', ['news/index'] ) ?>
                             </li>
                             <li>
@@ -97,15 +106,21 @@ use app\assets\AppAsset;
                 </ul>
                 <br>
             </div>
-            <div class="col-sm-10">        
-                <?php echo $content; ?>
+            <div class="col-sm-10"> 
+                <div class="container-fluid">
+                    <?= Breadcrumbs::widget([
+                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                    ]) ?>
+                    <?= $content ?>
+                </div>       
             </div>  
         </div>
     </div>
 
     <footer class="container-fluid">
     </footer>
-
+<?php $this->endBody() ?>
 </body>
 </html>
+<?php $this->endPage() ?>
 

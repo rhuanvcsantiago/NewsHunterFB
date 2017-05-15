@@ -1,3 +1,8 @@
+<?php
+    $this->title = 'Classificador';
+    $this->params['breadcrumbs'][] = $this->title;
+?>
+
 
 <?php if( $updateResult["result"] == "success" ): ?>
     <div class="alert alert-success alert-dismissible" role="alert">

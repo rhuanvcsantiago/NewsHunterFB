@@ -241,9 +241,10 @@ class FetcherServer implements MessageComponentInterface {
         /* save execution time */
             date_default_timezone_set('America/Fortaleza');
             $time = date("Y-m-d H:i:s");
-            $sql = 'INSERT INTO Execution (type, timestamp) values("fetcher", "' . $time . '")'; 
-            if( $this->database->query($sql) !== 1)  
-                $this->log_and_send("error saving fetcher execution timestamp:" . $this->database->error() ); 
+            $sql = 'INSERT INTO Execution (type, timestamp) values("fetcher", "' . date("d-m-Y H:i:s") . '")'; 
+            $this->database->query($sql);
+            if( $this->database->error() )  
+                $this->log_and_send("error saving fetcher execution timestamp:" . $this->database->error(), 1 ); 
         /* save execution time */
 
         /* log */ $this->log_and_send( "fetching all news" , 1);

@@ -170,19 +170,24 @@ FETCHER SERVER 2.0
     - a outra opção era criar um action para update, mas ai teria que chamar a funcao de mostrar a tela posteriormente e como ficaria a passagem de parametros para mostrar?
 
 ::TODO
-- Cadastrar execuções do Fetcher.
-    - Criar tabela.
-    - Mostrar ultimas execuções na tela inicial.
-- Cadastrar ultimo envio de emails.
-- Enviar emails através de AJAX ou com websocket e uma thread.
-    - Se for ajax.
-        - Adicionar na tela de e-mails os emails a se enviarem.
-- Inserir cadastro de Institute_has_Broadcaster.
-    - Inserir no cadastro de instituto um dropDown menu.
-- Fetcher
-    - Criar Thread.
-    - Fazer validações de possíveis erros.
-        - Throw new exception não blocante? Toda exception é blocante?
+
+- Otimização
+    - Enviar emails através de AJAX ou com websocket e uma thread.
+        - Se for ajax.
+            - Adicionar na tela de e-mails os emails a se enviarem.
+    - Fetcher
+        - Criar Thread.
+        - Fazer validações de possíveis erros.
+            - Throw new exception não blocante? Toda exception é blocante?
+    - Organizar MVC
+        - Sobrecarregar o Controller administrador.        
+
+- Essencial            
+    - Inserir cadastro de Institute_has_Broadcaster.
+        - Inserir no cadastro de instituto um dropDown menu.
+    - Criar Hash de usuário cadastrado.
+    - Cadastrar opções de escolha para acompanhamento.    
+
 
 - Interface
     - Usuário.
@@ -204,4 +209,9 @@ FETCHER SERVER 2.0
 
 :: DONE
 - Colocar Login para acessar tudo que não seja o SITE.
+- Cadastrar execuções do Fetcher.
+    - Criar tabela.
+    - Mostrar ultimas execuções na tela inicial
+- Cadastrar ultimo envio de emails.
+
    

@@ -1,4 +1,9 @@
 <?php
+    $this->title = 'Página Inicial';
+    $this->params['breadcrumbs'][] = $this->title;
+?>
+
+<?php
 
     $result = array_reverse($result);
 
@@ -78,11 +83,11 @@
 ?>
 
 
-<h1>Bem vindo, Administrador!</h1>
+<h3>Bem vindo, <strong>Administrador!</strong></h3>
 <ul>
     <br />
     <li>
-        <h3 style="display:inline;"> Você têm [ <a><?php echo $countTotal?></a> ] noticias para classificar. </h3>
+        <h4 style="display:inline;"> Você têm [ <a><?php echo $countTotal?></a> ] noticias para classificar. </h4>
         <br />
         <br />
         <?php echo $tableString?>
@@ -93,9 +98,9 @@
         foreach ($lastExecutions as $position => $lastExecution) {
             
             if($lastExecution["type"] == "fetcher"){
-                echo "<li><h3>[ <a>".$lastExecution["lastExecutionTime"]."</a> ] foi ultima data de execução do fetcher.</h3></li>";
+                echo "<li><h4>[ <a>".$lastExecution["lastExecutionTime"]."</a> ] foi ultima data de execução do fetcher.</h4></li>";
             } else {
-                echo "<li><h3>[ <a>".$lastExecution["lastExecutionTime"]."</a> ] foi ultimo envio de emails.</h3></li>"; 
+                echo "<li><h4>[ <a>".$lastExecution["lastExecutionTime"]."</a> ] foi ultimo envio de emails.</h4></li>"; 
             }
 
             echo "<br />";

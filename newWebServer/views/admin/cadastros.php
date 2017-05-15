@@ -1,9 +1,8 @@
-<pre>
-FAZER CRUD:
-    - INSTITUTOS
-    - BROADCASTERS
-    - EMAILS
-    - NEWS
-    - USERS
+<?php 
+    $this->title = 'Cadastros';
+    $this->params['breadcrumbs'][] = $this->title;
+?>
 
-</pre>
+
+<h2> <strong>Atenção!</strong> Cuidado com o que vai ser deletado ou cadastrado para não quebrar o sistema!</h2>
+

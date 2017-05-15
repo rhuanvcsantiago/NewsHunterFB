@@ -1,3 +1,8 @@
+<?php
+    $this->title = 'Enviar Emails';
+    $this->params['breadcrumbs'][] = $this->title;
+?>
+
 <?php if( $updateResult["result"] == "success" ): ?>
     <div class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -18,9 +23,11 @@
 <?php endif; ?>
 
 <button  id="botaoEnviarEmails" type="button" class="btn btn-primary btn-lg">ENVIAR EMAILS</button>
+&nbsp&nbsp&nbsp<h3 style="display:inline;">[ <a href="#"><?php echo count($result) ?></a> ] notícias classificadas e não enviadas.</h3>
+<br/>
 <br/>
 
-<h2>[ <a href="#"><?php echo count($result) ?></a> ] notícias classificadas e não enviadas.</h2>
+
 <div class="table-responsive table-striped ">
   <table class="table table-hover">
     <thead>

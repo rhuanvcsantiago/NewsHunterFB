@@ -79,10 +79,7 @@ class SiteController extends Controller
             $msg = "email [" . $data["email"] . "] cadastrado com sucesso: " . $numberRowsAffected;
 
         }
-        // Se não logado -> LandingPage
-        // Se logado
-            // admin
-            // user
+        
         return $this->render('index', ["msg" => $msg] );
     }
 

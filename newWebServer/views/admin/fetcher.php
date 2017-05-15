@@ -1,3 +1,8 @@
+<?php
+    $this->title = 'Buscador';
+    $this->params['breadcrumbs'][] = $this->title;
+?>
+
 <style>
     @import url("http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
     .chat

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Institute;
+use app\models\Broadcaster;
 use yii\filters\AccessControl;
 use app\models\InstituteSearch;
 use yii\web\Controller;
@@ -79,10 +80,32 @@ class InstituteController extends Controller
         $model = new Institute();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            // cadastrar institute has broadcaster
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model
+            ]);
+        }
+    }
+
+    /**
+     * Creates a new Institute model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionAddbroadcaster()
+    {
+        $model = new Institute();
+        $broadcasters = Broadcaster::findAll();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            // cadastrar institute has broadcaster
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'broadcasters' => $broadcasters
             ]);
         }
     }
