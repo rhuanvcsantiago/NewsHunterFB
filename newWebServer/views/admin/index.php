@@ -89,8 +89,7 @@
     <li>
         <h4 style="display:inline;"> Você têm [ <a><?php echo $countTotal?></a> ] noticias para classificar. </h4>
         <br />
-        <br />
-        <?php echo $tableString?>
+        <?php if( $countTotal != 0) echo $tableString?>
     </li>
     <br />
 

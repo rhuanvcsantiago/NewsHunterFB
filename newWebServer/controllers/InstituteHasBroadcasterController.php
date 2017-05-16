@@ -57,7 +57,7 @@ class InstituteHasBroadcasterController extends Controller
     {
         $searchModel = new InstituteHasBroadcasterSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+       
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

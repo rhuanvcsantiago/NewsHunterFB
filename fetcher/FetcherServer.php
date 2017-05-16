@@ -65,7 +65,7 @@ class FetcherServer implements MessageComponentInterface {
         $tweetes_array = [];
 
         $count = count($tweets);
-        /* log */ $this->log_and_send( "results round: [ {$count} ] ", 4);
+        /* log */ $this->log_and_send( "results found: [ {$count} ] ", 4);
 
         foreach ($tweets as $position => $tweetObject) {
 
@@ -241,7 +241,7 @@ class FetcherServer implements MessageComponentInterface {
         /* save execution time */
             date_default_timezone_set('America/Fortaleza');
             $time = date("Y-m-d H:i:s");
-            $sql = 'INSERT INTO Execution (type, timestamp) values("fetcher", "' . date("d-m-Y H:i:s") . '")'; 
+            $sql = 'INSERT INTO Execution (type, timestamp) values("fetcher", "' . $time . '")'; 
             $this->database->query($sql);
             if( $this->database->error() )  
                 $this->log_and_send("error saving fetcher execution timestamp:" . $this->database->error(), 1 ); 

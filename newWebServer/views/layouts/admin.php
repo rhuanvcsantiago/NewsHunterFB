@@ -8,6 +8,8 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use yii\helpers\Url;
+
 
 AppAsset::register($this);
 ?>
@@ -22,6 +24,7 @@ AppAsset::register($this);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <?php $this->head() ?>
+  <?= Html::csrfMetaTags() ?>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -57,6 +60,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
     <div class="navbar navbar-default">
+        <h3>NewsHunter - Painel do administrador</h3>
     </div>
 
     <div class="container-fluid">
@@ -79,9 +83,6 @@ AppAsset::register($this);
                         <ul id="cadastroSubmenu">
                             <li>
                                 <?= Html::a('Instituto', ['institute/index'] ) ?>
-                            </li>
-                            <li>
-                                <?= Html::a('Broadcasters', ['broadcaster/index'] ) ?>
                             </li>
                             <li>
                                 <?= Html::a('Inst & Broad', ['institute-has-broadcaster/index'] ) ?>
@@ -109,6 +110,10 @@ AppAsset::register($this);
             <div class="col-sm-10"> 
                 <div class="container-fluid">
                     <?= Breadcrumbs::widget([
+                        'homeLink' => [ 
+                            'label' => Yii::t('yii', 'Admin Painel'),
+                            'url' => Url::to("index?r=admin"),
+                        ],
                         'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                     ]) ?>
                     <?= $content ?>

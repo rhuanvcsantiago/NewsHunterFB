@@ -18,9 +18,15 @@ class InstituteHasBroadcasterSearch extends InstituteHasBroadcaster
     public function rules()
     {
         return [
-            [['id', 'Institute_id', 'Broadcaster_id'], 'integer'],
-            [['userName', 'link'], 'safe'],
+            [['id'], 'integer'],
+            [['userName', 'link', 'institute.name', 'broadcaster.name'], 'safe'],
         ];
+    }
+
+    public function attributes()
+    {
+        // add related fields to searchable attributes
+        return array_merge(parent::attributes(), ['institute.name', 'broadcaster.name']);
     }
 
     /**
@@ -49,6 +55,20 @@ class InstituteHasBroadcasterSearch extends InstituteHasBroadcaster
             'query' => $query,
         ]);
 
+        
+        $query->joinWith('broadcaster as broadcaster');
+        $query->joinWith('institute as institute');
+       
+        $dataProvider->sort->attributes['broadcaster.name'] = [
+            'asc' => ['broadcaster.name' => SORT_ASC],
+            'desc' => ['broadcaster.name' => SORT_DESC],
+        ];
+       
+        $dataProvider->sort->attributes['institute.name'] = [
+            'asc' => ['institute.name' => SORT_ASC],
+            'desc' => ['institute.name' => SORT_DESC],
+        ];
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -65,8 +85,14 @@ class InstituteHasBroadcasterSearch extends InstituteHasBroadcaster
         ]);
 
         $query->andFilterWhere(['like', 'userName', $this->userName])
-            ->andFilterWhere(['like', 'link', $this->link]);
+            ->andFilterWhere(['like', 'link', $this->link])
+            ->andFilterWhere(['like', 'institute.name', $this->getAttribute('institute.name')])
+            ->andFilterWhere(['like', 'broadcaster.name', $this->getAttribute('broadcaster.name')]);
+
 
         return $dataProvider;
+        
+        
+
     }
 }

@@ -88,4 +88,5 @@ class InstituteHasBroadcaster extends \yii\db\ActiveRecord
     {
         return $this->hasMany(News::className(), ['id' => 'News_id'])->viaTable('Institute_has_Broadcaster_has_News', ['Institute_has_Broadcaster_id' => 'id']);
     }
+
 }

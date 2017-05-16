@@ -181,14 +181,12 @@ FETCHER SERVER 2.0
             - Throw new exception não blocante? Toda exception é blocante?
     - Organizar MVC
         - Sobrecarregar o Controller administrador.        
-
 - Essencial            
-    - Inserir cadastro de Institute_has_Broadcaster.
-        - Inserir no cadastro de instituto um dropDown menu.
     - Criar Hash de usuário cadastrado.
-    - Cadastrar opções de escolha para acompanhamento.    
-
-
+    - Cadastrar opções de escolha para acompanhamento.   
+    - Trocar nomes em ingles das páginas geradas automaticamente.
+        - Breadcumbs.
+        - Cabeçalhos.  
 - Interface
     - Usuário.
         - Fazer uma landing melhor.
@@ -196,22 +194,28 @@ FETCHER SERVER 2.0
         - LandingPage
             - Criar Models
             - Fazer validations
+        - Adicionar tabela da última captura de cada instituto com broadcaster.    
+
     - Administrador    
         - Usar AdminLTE como template
             - https://github.com/dmstr/yii2-adminlte-asset
-        - Adicionar árvore de caminhos (lista) -> breadcumbs?    
+        - Colocar     
 - Login
     - Fazer login por database   
-
 - Database
     - Usar ActiveRecords
+        - Substituir todos os códigos CRUS.
     
-
 :: DONE
 - Colocar Login para acessar tudo que não seja o SITE.
 - Cadastrar execuções do Fetcher.
     - Criar tabela.
     - Mostrar ultimas execuções na tela inicial
 - Cadastrar ultimo envio de emails.
+- Inserir cadastro de Institute_has_Broadcaster.
+    - Inserir no cadastro de instituto um dropDown menu.
 
-   
+ # Dicas do Ramir  
+- Exclusão de itens já classificados.
+- https://br.pinterest.com/?logged_out=true
+

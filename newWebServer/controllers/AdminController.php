@@ -10,6 +10,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\News;
 use yii\data\Pagination;
+use yii\helpers\VarDumper;
 
 
 class AdminController extends Controller
@@ -73,10 +74,12 @@ class AdminController extends Controller
         $command = $connection->createCommand( $queryMaxIds );
         $MaxIds = $command->queryAll();
 
+        // sempre tem  que ter informacao do fetcher e do envio de emails
+        // preenchimento default do banco com valor zero
         $queryLastExecutions  = "select `type`, `timestamp` as lastExecutionTime FROM Execution where id = ".$MaxIds[0]["id"]." or id = ".$MaxIds[1]["id"]." ";
         $command = $connection->createCommand( $queryLastExecutions );
         $lastExecutions = $command->queryAll();
-
+            
         return $this->render( 'index', ['result' => $result, 'lastExecutions' => $lastExecutions] );
     }
 
