@@ -8,8 +8,8 @@ use yii\helpers\VarDumper;
 /* @var $this yii\web\View */
 /* @var $model app\models\InstituteHasBroadcaster */
 
-$this->title = 'Update Institute Has Broadcaster: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Institute Has Broadcasters', 'url' => ['index']];
+$this->title = 'Atualizar broadcasters para institutos: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Institutos e Broadcasters', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id, 'Institute_id' => $model->Institute_id, 'Broadcaster_id' => $model->Broadcaster_id]];
 $this->params['breadcrumbs'][] = 'Update';
 

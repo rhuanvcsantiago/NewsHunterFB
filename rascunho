@@ -129,9 +129,6 @@ SUGESTOES
 ____:::: TODO ::::_____
 
 FETCHER SERVER 1.0
-- Resolver charset
-    - no save do banco 
-    - no fetch da nuvem 
 - Traduzir LOG do Socket para portugues.
 - Resolver problema de envio de menssagens no final do loop do RATCHET. Treads?
 
@@ -187,6 +184,7 @@ FETCHER SERVER 2.0
     - Trocar nomes em ingles das páginas geradas automaticamente.
         - Breadcumbs.
         - Cabeçalhos.  
+    - Fazer testes se existe ou não existe determinado instituto na hora do cadastro.    
 - Interface
     - Usuário.
         - Fazer uma landing melhor.
@@ -214,6 +212,9 @@ FETCHER SERVER 2.0
 - Cadastrar ultimo envio de emails.
 - Inserir cadastro de Institute_has_Broadcaster.
     - Inserir no cadastro de instituto um dropDown menu.
+- Resolver charset
+    - no save do banco 
+    - no fetch da nuvem    
 
  # Dicas do Ramir  
 - Exclusão de itens já classificados.
