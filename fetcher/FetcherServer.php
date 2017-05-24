@@ -30,7 +30,8 @@ class FetcherServer implements MessageComponentInterface {
 
     public function getTwitterNews($institute_name){
         
-        /* log */ $this->log_and_send( "fetching on [ TWITTER ]", 3);
+        /* log */ $this->log_and_send( "fetching broadcaster: [ TWITTER ]", 3);
+        /* log */ $this->log_and_send( "#getting news", 4);
 
         $twitterSettings = array(
             'oauth_access_token' => "710259368063803392-J3iAEJvvYjphXLKgUUslhGczx7zUXhf",
@@ -46,11 +47,11 @@ class FetcherServer implements MessageComponentInterface {
 
         if($last_fetched_key == ""){
             $getfield = '?screen_name=' . $twitter_user_name . '&count=5';
-            /* log */ $this->log_and_send( "No lastFetchedKey found. First time running.", 4 );
+            /* log */ $this->log_and_send( "No lastFetchedKey found. First time running.", 5 );
         }
         else{
             $getfield = '?screen_name=' . $twitter_user_name . '&since_id=' .  $last_fetched_key;
-            /* log */ $this->log_and_send( "last fetched key: " . $last_fetched_key, 4 );
+            /* log */ $this->log_and_send( "last fetched key: " . $last_fetched_key, 5 );
         }
 
         $requestMethod = 'GET';
@@ -65,7 +66,7 @@ class FetcherServer implements MessageComponentInterface {
         $tweetes_array = [];
 
         $count = count($tweets);
-        /* log */ $this->log_and_send( "results found: [ {$count} ] ", 4);
+        /* log */ $this->log_and_send( "results found: [ {$count} ] ", 5);
 
         foreach ($tweets as $position => $tweetObject) {
 
@@ -98,7 +99,7 @@ class FetcherServer implements MessageComponentInterface {
                                     "image"         => $tweet_image 
                                 ); 
 
-            /* log */ $this->log_and_send( "Key: [ " . $tweet_id . " ] fetched.", 5 );                       
+            /* log */ $this->log_and_send( "Key: [ " . $tweet_id . " ] fetched.", 6 );                       
             
             array_push( $tweetes_array, $tweet_array );    
         }
@@ -109,15 +110,16 @@ class FetcherServer implements MessageComponentInterface {
 
     public function getFacebookNews( $institute_name ){
          
-        /* log */ $this->log_and_send( "fetching on [ FACEBOOK ]", 3);
+        /* log */ $this->log_and_send( "fetching broadcaster: [ FACEBOOK ]", 3);
+        /* log */ $this->log_and_send( "#getting news", 4);
         
         //CHECK IF INSTITUTE EXISTS IN DATA LOADED   
         if( !isset($this->data[$institute_name]) ) {
-            /* log */ $this->log_and_send("Institute [ " . $institute_name . " ] not found in our Data", 4 );
+            /* log */ $this->log_and_send("Institute [ " . $institute_name . " ] not found in our Data", 5 );
 
         //CHECK  IF INSTITUTE HAS FACEBOOK BROADCASTER    
         } else if( !isset($this->data[$institute_name]["FACEBOOK"] ) ) {
-            /* log */ $this->log_and_send("Institute [ " . $institute_name . " ] do not have a FACEBOOK broadcaster.", 4 );
+            /* log */ $this->log_and_send("Institute [ " . $institute_name . " ] do not have a FACEBOOK broadcaster.", 5 );
         
         //FETCH FACEBOOK NEWS
         } else {        
@@ -128,12 +130,12 @@ class FetcherServer implements MessageComponentInterface {
 
             if( $lastFetchedKey != "" ) {
                 //$lastFetchedKey = $this->data[$institute_name]["FACEBOOK"]["LAST_FETCHED_KEY"];
-                /* log */ $this->log_and_send( "last fetched key: " . $lastFetchedKey, 4 );
+                /* log */ $this->log_and_send( "last fetched key: " . $lastFetchedKey, 5 );
             }    
             else {
                 $pagePostsQtdlimit = "&limit=5";
                 $lastFetchedKey = 0;
-                /* log */ $this->log_and_send( "No lastFetchedKey found. First time running.", 4 );
+                /* log */ $this->log_and_send( "No lastFetchedKey found. First time running.", 5 );
             }
                  
             $facebook_page_id = $this->data[$institute_name]["FACEBOOK"]["USER_NAME"];     
@@ -146,17 +148,20 @@ class FetcherServer implements MessageComponentInterface {
             $pageNumber = 1;
 
             do {
-                /* log */ $this->log_and_send( "getting page number [ ".$pageNumber." ]", 4 );
+                /* log */ $this->log_and_send( "getting page number [ ".$pageNumber." ]", 5 );
                 //GETTING PAGE DATA
-                $data = file_get_contents($request_link);
+                $dataJsonString = file_get_contents($request_link);
+                //$dataWithoutParsing = json_decode($dataJsonString, true);
                 
-                $data = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
+                /*
+                $dataJsonString = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
                     return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
-                }, $data);
+                }, $dataJsonString);
+                */
 
-                $data = json_decode($data, true);
+                $data = json_decode($dataJsonString, true);
                 
-                $page_last_post_index   = count($data["data"])-1;
+                $page_last_post_index   = count( $data["data"] )-1;
                 $page_last_post         = $data["data"][$page_last_post_index];
                 $page_last_post_key     = explode( "_", $page_last_post["id"] )[1];
 
@@ -213,7 +218,7 @@ class FetcherServer implements MessageComponentInterface {
 
                             if ( $key > $lastFetchedKey ) {
                                 array_push($arrayPosts, $modified_full_post);
-                                /* log */ $this->log_and_send( "News: [ " . $key . " ] fetched.", 5 );
+                                /* log */ $this->log_and_send( "News [ " . $key . " ] fetched.", 6 );
                             }    
                         }     
                     }  
@@ -228,7 +233,7 @@ class FetcherServer implements MessageComponentInterface {
             } while ( ($request_link != "") && ($lastFetchedKey =! 0) && ($page_last_post_key > $lastFetchedKey) );
 
             $count = count( $arrayPosts );
-            /* log */ $this->log_and_send( "results round: [ {$count} ] ", 4);
+            /* log */ $this->log_and_send( "results found: [ {$count} ] ", 5);
 
             $this->data[$institute_name]["FACEBOOK"]["NEWS"] = $arrayPosts; 
  
@@ -247,15 +252,15 @@ class FetcherServer implements MessageComponentInterface {
                 $this->log_and_send("error saving fetcher execution timestamp:" . $this->database->error(), 1 ); 
         /* save execution time */
 
-        /* log */ $this->log_and_send( "fetching all news" , 1);
+        /* log */ $this->log_and_send( "fetching [ ALL NEWS ]" , 1);
         foreach ($this->data as $institute_name => $broadcaster_array) {
-            /* log */ $this->log_and_send( "fetching [ " . $institute_name . " ] news.", 2);
+            /* log */ $this->log_and_send( "fetching institute: [ " . $institute_name . " ] ", 2);
             foreach ($broadcaster_array as $broadcaster_name => $broadcaster_properties) {
                                 
                 switch ( $broadcaster_name ) {
                     
                     case 'SITE':
-                        /* log */ $this->log_and_send( "fetching on [ SITE ]", 3);
+                        /* log */ $this->log_and_send( "fetching broadcaster [ SITE ]", 3);
                         break;
 
                     case 'FACEBOOK':
@@ -278,27 +283,36 @@ class FetcherServer implements MessageComponentInterface {
                         break;
                 }
             }
-            /* log */ $this->log_and_send( "fetching on [ ".$broadcaster_name." ] END", 3);
+            /* log */ $this->log_and_send( "fetching broadcaster [ ".$broadcaster_name." ] ended", 3);
         }
-        /* log */ $this->log_and_send( "fetching all news FINISHED", 1);
+        /* log */ $this->log_and_send( "fetching [ ALL NEWS ] end", 1);
     }
     
     public function saveFacebookNews( $institute_name ){
-        /* log */ $this->log_and_send( "saving [ FACEBOOK ] news.", 4);
+        /* log */ $this->log_and_send( "#saving news.", 4);
 
         $ib_id = $this->data[$institute_name]["FACEBOOK"]["IB_ID"];
 
         // INVERTE O ARRAY DE NOTICIAS PARA SALVAR PRIMEIRO AS MAIS VELHAS
         $news  = array_reverse( $this->data[$institute_name]["FACEBOOK"]["NEWS"] );
-
+        /*
+                $dataJsonString = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
+                    return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+                }, $dataJsonString);
+        */
         foreach ($news as $pos => $post) {
 
-            $access_key     = $post["id"];                                       // access_key
-            $created_time   = $post["created_time"];                             // created_time
-            $type           = $post["type"];                                         // type
-            $name           = mysql_escape_mimic( $post["name"] );            // title
-            $message        = mysql_escape_mimic( $post["message"]  );         // content
-            $description    = mysql_escape_mimic( $post["description"]  );     // expanded_content
+            $access_key     = $post["id"];                                          // access_key
+            $created_time   = $post["created_time"];                                // created_time
+            $type           = $post["type"];  
+
+            $name           = $post["name"];    
+            $message        = $post["message"];                    
+            $description    = $post["description"];                              
+            //$name           = replace4byte( $post["name"] );                        // title
+            //$message        = replace4byte( $post["message"]  );                    // content
+            //$description    = replace4byte( $post["description"]  );                 // expanded_content
+
             $link           = $post["link"];                                         // shared_link
             $full_picture   = $post["full_picture"];                                 // full_picture_link      
 
@@ -322,7 +336,7 @@ class FetcherServer implements MessageComponentInterface {
                     .$this->database->insert_id() . "');\n\n";
                 
                 if ($this->database->query($sql) === TRUE) { 
-                    /* log */ $this->log_and_send( "key [ {$access_key} ] saved.", 5);        
+                    /* log */ $this->log_and_send( "News [ {$access_key} ] saved.", 5);        
                 } else {
                     /* log */ $this->log_and_send( "FATAL ERROR saving key [ {$access_key} ].", 4);     
                     /* log */ $this->log_and_send( "Error: " . $sql . "<br>" . $this->database->error(), 4);
@@ -330,7 +344,7 @@ class FetcherServer implements MessageComponentInterface {
                 }  
 
             } else {
-                /* log */ $this->log_and_send( "FATAL ERROR saving key [ {$id} ].", 4);     
+                /* log */ $this->log_and_send( "FATAL ERROR saving key [ {$access_key} ].", 4);     
                 /* log */ $this->log_and_send( "Error: " . $sql . "<br>" . $this->database->error(), 4);
                 exit;
             }
@@ -338,7 +352,7 @@ class FetcherServer implements MessageComponentInterface {
     }
 
     public function saveTwitterNews( $institute_name ){
-        /* log */ $this->log_and_send( "saving [ TWITTER ] news.", 4);
+        /* log */ $this->log_and_send( "#saving news.", 4);
 
         $ib_id = $this->data[$institute_name]["TWITTER"]["IB_ID"];
 
@@ -351,7 +365,9 @@ class FetcherServer implements MessageComponentInterface {
             $created_at     = $post["created_at"];                                   // created_time
             
             $text           = $post["text"] ; 
-            $text           = replace4byte( $text ); 
+            $text           = $text; 
+
+            //$text           = replace4byte( $text ); 
          
             $expanded_url   = $post["link"];                                         // shared_link
             $media_url      = $post["image"];                                        // full_picture_link

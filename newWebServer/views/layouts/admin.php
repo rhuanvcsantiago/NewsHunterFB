@@ -60,7 +60,12 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
     <div class="navbar navbar-default">
-        <h3>NewsHunter - Painel do administrador</h3>
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">NewsHunter</a>
+            </div>
+            
+        </div>
     </div>
 
     <div class="container-fluid">
@@ -78,7 +83,7 @@ AppAsset::register($this);
                     <li <?php  if( ($controllerName=="admin") &&($actionName=="index") ) echo 'class="active"'; ?> >
                         <?= Html::a('Inicial', ['admin/index'] ) ?>
                     </li>
-                    <li <?php  if( ($controllerName!="admin"&&$actionName=="index") || $actionName=="cadastros" ) echo 'class="active"'; ?>>
+                    <li <?php  if( ($controllerName!="admin" && $actionName=="index") || $actionName=="cadastros" ) echo 'class="active"'; ?>>
                         <?= Html::a('Cadastros', ['admin/cadastros'] ) ?>
                         <ul id="cadastroSubmenu">
                             <li>
@@ -104,6 +109,9 @@ AppAsset::register($this);
                     <li <?php  if( ($controllerName=="admin")&&($actionName=="sendemails") ) echo 'class="active"'; ?>>
                         <?= Html::a('Enviar Emails', ['admin/sendemails'] ) ?>
                     </li>
+                </ul>
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a href=" <?= Url::to(['site/logout']); ?> "><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
                 </ul>
                 <br>
             </div>

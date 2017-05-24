@@ -220,3 +220,8 @@ FETCHER SERVER 2.0
 - Exclusão de itens já classificados.
 - https://br.pinterest.com/?logged_out=true
 
+
+OBSERVACOES
+
+utf8mb4
+O problema é que o MySQL não aderiu completamente ao padrão UTF-8. Ele implementou apenas símbolos de até 3 bytes e esqueceu o resto. O que se declara no MySQL como utf8 na verdade não é UTF-8, é apenas um pedaço dele. Para consertar este erro, a partir da versão 5.5, o MySQL implementou o padrão completo indo de 1 até 4 bytes e como já havia usado o nome utf8 chamou sua nova implementação de utf8mb4. Resumindo o utf8 do MySQL não é UTF-8 e o utf8mb4 segue totalmente o padrão UTF-8.

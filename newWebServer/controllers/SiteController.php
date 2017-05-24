@@ -8,6 +8,10 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\UserFollowInstitute;
+use app\models\User;
+
+
 
 class SiteController extends Controller
 {
@@ -81,6 +85,34 @@ class SiteController extends Controller
         }
         
         return $this->render('index', ["msg" => $msg] );
+    }
+
+    public function actionNewuser()
+    {
+        // Verificar e-mail e institutes ids  
+        echo hash_hmac('ripemd160', 'The quick brown fox jumped over the lazy dog.', 'secret');
+        // $form->field($model, 'items[]')->checkboxList(['a' => 'Item A', 'b' => 'Item B', 'c' => 'Item C']);
+    }
+
+    public function actionEditUserInstitutes()
+    {
+        $userHash = Yii::$app->request->get("userHash");
+
+        echo "entrei";
+        var_dump($userHash);
+
+        // verify if has a UserHash param
+        if( $userHash ){
+            // verify if is a valid UserHash in database
+            $user = User::find()->where(['hash' => $userHash])->one();
+            if( $user ){
+                $userHasInstitutes = UserFollowInstitute::find()->where(['user_id' => $userHash])->all();
+                //return $this->render('editUserInstitutes', ["userHasInstitutes" => $userHasInstitutes] );
+                var_dump($userHasInstitutes);
+            }
+        }
+        else 
+            $this->render('index', ["msg" => "usuário não cadastrado"] );
     }
 
     /**
