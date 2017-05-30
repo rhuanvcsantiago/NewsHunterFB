@@ -45,8 +45,8 @@ class FetcherDatabaseWrapper {
             printf("Initial database character set: %s\n", $this->mysqli->character_set_name());
 
             /* change character set to utf8 */
-            if (!$mysqli->set_charset("utf8")) {
-                printf("Error loading database character set utf8: %s\n", $this->mysqli->error);
+            if (!$mysqli->set_charset("utf8mb4")) {
+                printf("Error loading database character set utf8mb4: %s\n", $this->mysqli->error);
                 exit();
             } else {
                 printf("Current database character set: %s\n", $this->mysqli->character_set_name());

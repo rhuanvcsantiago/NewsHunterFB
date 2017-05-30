@@ -9,6 +9,8 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\News;
+use app\models\User;
+use app\models\UserFollowInstitute;
 use yii\data\Pagination;
 use yii\helpers\VarDumper;
 
@@ -103,6 +105,17 @@ class AdminController extends Controller
         return $this->render('fetcher');
     }
 
+    public function actionTeste()
+    {
+        Yii::$app->mailer->compose( 'testeFBacontece' ) 
+                        ->setFrom('phodaoce@gmail.com')
+                        ->setTo( 'rhuanvcsantiago@hotmail.com' )
+                        ->setSubject('Teste FB Acontece')
+                        ->send();
+
+        return $this->render('fetcher');                
+    }
+
     public function actionSendemails()
     {
         $request = Yii::$app->request;
@@ -113,10 +126,7 @@ class AdminController extends Controller
         $command = $connection->createCommand( $queryNewsNotSended );
         $newsNotSended = $command->queryAll();
 
-        // [done] pegar lista de emails.
-        $queryMailList = "SELECT email FROM User";        
-        $command = $connection->createCommand( $queryMailList );
-        $mailsToSend = $command->queryAll();
+        $userList = User::find()->all();
 
         $updateResult = [];
         $updateResult["result"] = "";
@@ -135,16 +145,29 @@ class AdminController extends Controller
 
             $updateResult["result"] = "error";
 
-            if( (count($newsNotSended) > 0) && (count($mailsToSend) > 0) ){
+            if( (count($newsNotSended) > 0) && (count($userList) > 0) ){
                 
                 //PEGAR DADOS USUARIO -> ASSINOU -> ENTIDADE
 
                 // !!! REQUISICAO DEMORA MUITO
                 // ACHAR UM JEITO TIPO WEBSOCKETS OU AJAX DE ACOMPANHAR ENVIO DE EMAIL POR EMAIL
-                foreach ($mailsToSend as $position => $user) {
-                    Yii::$app->mailer->compose( 'emailnews2',["lastNews" => $newsNotSended] ) // a view rendering result becomes the message body here
+                foreach ($userList as $position => $user) {
+                    
+                    // Pegando lista de coisas que o usuário segue
+                    $userFollowInstituteList = UserFollowInstitute::find()->where(['User_id' => $user->id])->joinWith('institute')->all();
+                    $allowedInstitutesList = [];
+                    foreach ($userFollowInstituteList as $pos => $userFollowInstitute) {
+                       array_push($allowedInstitutesList, $userFollowInstitute->institute->name);
+                    }
+
+                    $changeInstitutesFollowingLink = "index.php?r=site/edit-user-following-institutes&userEmail=".$user->email."&userHash=".$user->hash;
+
+                    Yii::$app->mailer
+                        ->compose( 'emailnews2', [ "lastNews" => $newsNotSended, 
+                                                   "changeInstitutesFollowingLink" => $changeInstitutesFollowingLink, 
+                                                   "allowedInstitutesList" => $allowedInstitutesList] ) 
                         ->setFrom('phodaoce@gmail.com')
-                        ->setTo( $user["email"] )
+                        ->setTo( $user->email )
                         ->setSubject('Novidades News Hunter FFB')
                         ->send();
                 }
