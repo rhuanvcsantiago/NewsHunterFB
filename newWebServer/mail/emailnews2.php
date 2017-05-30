@@ -21,25 +21,32 @@
         $news_full_picture_link = $ibn["news_full_picture_link"];
         $news_id                = $ibn["news_id"];
 
-        if( !isset( $ibn_array[$institute_name] ) )
-            $ibn_array[$institute_name] = [];
-
-        if( !isset( $ibn_array[$institute_name][$broadcaster_name] ) )
-            $ibn_array[$institute_name][$broadcaster_name] = [];   
-
-        if( !isset( $ibn_array[$institute_name][$broadcaster_name][$news_id] ) )
-            $ibn_array[$institute_name][$broadcaster_name][$news_id] = [];    
         
-        $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_created_time"]      = $news_created_time; 
-        $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_title"]             = $news_title;
-        $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_content"]           = $news_content;
-        $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_expanded_content"]  = $news_expanded_content;
-        $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_shared_link"]       = $news_shared_link;
-        $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_full_picture_link"] = $news_full_picture_link;
+        // verifica se usuário segue aquele instituto
+        if( in_array( $institute_name, $allowedInstitutesList) ){
+
+            if( !isset( $ibn_array[$institute_name] ) )
+                $ibn_array[$institute_name] = [];
+
+            if( !isset( $ibn_array[$institute_name][$broadcaster_name] ) )
+                $ibn_array[$institute_name][$broadcaster_name] = [];   
+
+            if( !isset( $ibn_array[$institute_name][$broadcaster_name][$news_id] ) )
+                $ibn_array[$institute_name][$broadcaster_name][$news_id] = [];    
+            
+            $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_created_time"]      = $news_created_time; 
+            $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_title"]             = $news_title;
+            $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_content"]           = $news_content;
+            $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_expanded_content"]  = $news_expanded_content;
+            $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_shared_link"]       = $news_shared_link;
+            $ibn_array[$institute_name][$broadcaster_name][$news_id]["news_full_picture_link"] = $news_full_picture_link;
+
+        }
 
     }
     
     echo '<div>';
+    echo $changeInstitutesFollowingLink;
 
     foreach ($ibn_array as $institute_name => $broadcaster_array) {
 

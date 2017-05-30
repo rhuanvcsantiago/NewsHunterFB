@@ -193,7 +193,7 @@ FETCHER SERVER 2.0
             - Criar Models
             - Fazer validations
         - Adicionar tabela da última captura de cada instituto com broadcaster.    
-
+        - Error Handler
     - Administrador    
         - Usar AdminLTE como template
             - https://github.com/dmstr/yii2-adminlte-asset

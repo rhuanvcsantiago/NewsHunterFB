@@ -27,8 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'email:email',
             'password',
-            'googleAUTH',
-            'facebookAUTH',
+            //'googleAUTH',
+            //'facebookAUTH',
+            'hash',
             // 'sendEmail:email',
             // 'sendNotifications',
 

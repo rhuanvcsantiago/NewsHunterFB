@@ -306,9 +306,9 @@ class FetcherServer implements MessageComponentInterface {
             $created_time   = $post["created_time"];                                // created_time
             $type           = $post["type"];  
 
-            $name           = $post["name"];    
-            $message        = $post["message"];                    
-            $description    = $post["description"];                              
+            $name           = mysql_escape_mimic( $post["name"]) ;    
+            $message        = mysql_escape_mimic( $post["message"] );                    
+            $description    = mysql_escape_mimic( $post["description"] ) ;                              
             //$name           = replace4byte( $post["name"] );                        // title
             //$message        = replace4byte( $post["message"]  );                    // content
             //$description    = replace4byte( $post["description"]  );                 // expanded_content
