@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,7 +60,7 @@
                               background-color:white;
                               color: 727273;
                             ">
-                <a href="http://localhost:8080/"<?= $changeInstitutesFollowingLink ?>> 
+                <a href="#"> 
                   ALTERAR INSCRIÇÃO 
                 </a>
               </span>  
@@ -81,25 +79,7 @@
                        ">
           <tr>
             <td>
-                <?php
-                    
-                    foreach ($lastNews as $position => $news) {
-                        # code...
-                        if( in_array( $news["institute_name"], $allowedInstitutesList) ){
-                            
-                            
-                            
-                            echo "<tr>";
-                                echo "<td>" . $news["institute_name"] . "</td>"; 
-                                echo "<td>" . $news["broadcaster_name"] . "</td>"; 
-                                echo "<td>" . $news["news_id"] . "</td>"; 
-                                echo "<td>" . $news["news_title"] . "</td>"; 
-                                echo "<td>" . $news["news_content"] . "</td>"; 
-                            echo "</tr>"; 
-                        }
-                    }
-                ?>
-                <!-- FULL NEW BEGIN -->
+                <!-- NEW BEGIN -->
                 <table style = "
                                   background-color:white;
                                   width:100%;
@@ -225,112 +205,7 @@
                       </td>
                     </tr> 
                 </table>  
-               <!-- FULL NEW END -->
-               <hr> 
-               <!-- FULL NO IMAGE NEW BEGIN -->
-                <table style = "
-                                  background-color:white;
-                                  width:100%;
-                                  margin-top:40px;
-                                  margin-bottom:40px;
-                                ">
-                    <tr >
-                      <td > 
-                        <table style = "
-                                          width:100%;
-                                       ">
-                          <tr style = "
-                                          height:25px; 
-                                          vertical-align:top
-                                      ">
-                            <td style="font-size:8pt;
-                                      font-weight: bold;
-                                      text-align:left;
-                                      color: #727273;">
-                              <span style = "
-                                              color: black;
-                                            "> 
-                                &#10095; 
-                              </span> 
-                                ITA
-                            </td>  
-                            <td style = "
-                                          color: #727273;
-                                          font-size:9pt;
-                                          text-align:right;
-                                        ">
-                              5 de Maio de 2017 | Via Facebook
-                            </td>
-                          </tr>  
-                        </table>
-                      </td>
-                    </tr>
-                    <tr >
-                      <td> 
-                        <table>
-                          <tr style = "
-                                        color: #009028;
-                                        font-weight: bold;
-                                        font-size: 14pt;
-                                        line-height: 25px;
-                                        text-align:left;
-                                      ">
-                            <td>
-                              Últimos dias para realizar  sua inscrição para a prova do ITA 2                           
-                            </td> 
-                          </tr> 
-                          <tr style = "
-                                        height: 40px;
-                                      ">
-                            <td style = "
-                                          vertical-align:middle;
-                                          padding-bottom:19px;
-                                          color: #009028;
-                                          font-weight: bold;
-                                          font-size: 14pt;
-                                          text-align:left;
-                                        ">
-                              ______
-                            </td> 
-                          </tr> 
-                          <tr>
-                            <td style = "
-                                          color: #727273;
-                                          font-family: ArialMT;
-                                          text-align: justify;
-                                        ">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam congue libero erat, eget aliquam dolor fermentum at.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam congue libero erat, eget aliquam dolor fermentum at.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam congue libero erat, eget aliquam dolor fermentum at.Lorem ierat, eget aliquam dolor fermentum at.
-                            </td> 
-                          </tr>  
-                        </table>  
-                      </td>
-                    </tr> 
-                    <tr style = "
-                                  height:40px;
-                                ">
-                      <td style = "
-                                    text-align: right;
-                                    vertical-align:bottom;
-                                    padding-bottom: 8px;
-                                  "> 
-                        <span style = "
-                                        border:solid 2px #727273;
-                                        text-align: right;
-                                        padding-top:5px;
-                                        padding-bottom:5px;
-                                        padding-left: 10px;
-                                        padding-right: 10px;
-                                        font-size: 7pt;
-                                        font-weight: bold;
-                                        color: #727273;
-                                        background-color:white;
-                                      ">
-                          <a href="#">LEIA MAIS...</a>
-                        </span>
-                      </td>
-                    </tr> 
-                </table>  
-               <!-- FULL NO IMAGE NEW END -->
+               <!-- NEW END -->
 
                <hr>
 

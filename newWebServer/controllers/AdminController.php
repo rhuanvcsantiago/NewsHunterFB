@@ -163,7 +163,7 @@ class AdminController extends Controller
                     $changeInstitutesFollowingLink = "index.php?r=site/edit-user-following-institutes&userEmail=".$user->email."&userHash=".$user->hash;
 
                     Yii::$app->mailer
-                        ->compose( 'emailnews2', [ "lastNews" => $newsNotSended, 
+                        ->compose( 'emailnews', [ "lastNews" => $newsNotSended, 
                                                    "changeInstitutesFollowingLink" => $changeInstitutesFollowingLink, 
                                                    "allowedInstitutesList" => $allowedInstitutesList] ) 
                         ->setFrom('phodaoce@gmail.com')

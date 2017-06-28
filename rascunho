@@ -179,12 +179,11 @@ FETCHER SERVER 2.0
     - Organizar MVC
         - Sobrecarregar o Controller administrador.        
 - Essencial            
-    - Criar Hash de usuário cadastrado.
-    - Cadastrar opções de escolha para acompanhamento.   
     - Trocar nomes em ingles das páginas geradas automaticamente.
         - Breadcumbs.
         - Cabeçalhos.  
-    - Fazer testes se existe ou não existe determinado instituto na hora do cadastro.    
+    - Fazer testes se existe ou não existe determinado instituto na hora do cadastro. 
+    - Colocar Tracking nos links do LEIA MAIS nos emails enviados.   
 - Interface
     - Usuário.
         - Fazer uma landing melhor.
@@ -197,7 +196,7 @@ FETCHER SERVER 2.0
     - Administrador    
         - Usar AdminLTE como template
             - https://github.com/dmstr/yii2-adminlte-asset
-        - Colocar     
+        - Colocar
 - Login
     - Fazer login por database   
 - Database
@@ -214,7 +213,9 @@ FETCHER SERVER 2.0
     - Inserir no cadastro de instituto um dropDown menu.
 - Resolver charset
     - no save do banco 
-    - no fetch da nuvem    
+    - no fetch da nuvem  
+- Criar Hash de usuário cadastrado.
+- Cadastrar opções de escolha para acompanhamento.   
 
  # Dicas do Ramir  
 - Exclusão de itens já classificados.
@@ -225,3 +226,70 @@ OBSERVACOES
 
 utf8mb4
 O problema é que o MySQL não aderiu completamente ao padrão UTF-8. Ele implementou apenas símbolos de até 3 bytes e esqueceu o resto. O que se declara no MySQL como utf8 na verdade não é UTF-8, é apenas um pedaço dele. Para consertar este erro, a partir da versão 5.5, o MySQL implementou o padrão completo indo de 1 até 4 bytes e como já havia usado o nome utf8 chamou sua nova implementação de utf8mb4. Resumindo o utf8 do MySQL não é UTF-8 e o utf8mb4 segue totalmente o padrão UTF-8.
+
+
+# TIPOS DE POSTAGEM - Emails
+
+- CAMPOS
+    - TITULO, FOTO, TEXTO
+
+SE( FOTO, TEXTO )
+    SE( TITULO )
+        - POST GRANDE COM TITULO
+    ELSE
+        - POST GRANDE SEM TITULO    
+ELSE
+    SE ( TITULO )
+        SE ( IMAGEM )
+            - POST PEQUENO COM TITULO + IMAGEM
+        ELSE
+            - POST PEQUENO COM TITULO + TEXTO
+    ELSE
+        SE ( IMAGEM )
+            - POST PEQUENO COM IMAGEM
+        ELSE
+            - POST PEQUENO COM TEXTO
+
+- TODO
+    - CROP TEXTO -> LIMITE 150 CHARACTERS
+
+
+<!-- POST GRANDE COM TITULO - BEGIN  -->
+<table style="background-color:red; width:100%; height:100%;" >
+    <tr>
+    <td width="30%">
+        <!-- image -->
+        <img src="" alt="image"/>
+    </td>
+    <td>
+        <!-- divisor -->
+    </td>
+    <td width="68%">
+        <table width="100%" height="100%">
+        <tr>
+            <td height="20%">
+            <!-- title --> 
+            title
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <!-- text --> 
+            Lorem ipsun indolor Lorem olor Lorem ipsun indolor Lorem ipsun indolorun indolor
+            Lorem ipsun indolor Lorem olor Lorem ipsun indolor Lorem ipsun indolorun indolor
+            Lorem ipsun indolor Lorem olor Lorem ipsun indolor Lorem ipsun indolorun indolor
+            Lorem ipsun indolor Lorem olor Lorem ipsun indolor Lorem ipsun indolorun indolor
+            
+            </td>
+        </tr>
+        <tr>
+            <td height="20%">
+            <!-- read more --> 
+            <input type="button" value="read more"/>
+            </td>
+        </tr>
+        </table>
+    </td>
+    <tr>
+</table>   
+<!-- POST GRANDE COM TITULO - END -->  
